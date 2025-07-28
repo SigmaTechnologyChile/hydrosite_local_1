@@ -1,0 +1,1 @@
+{"action":"fetch","timeout":0,"data":[{"user":"hydrosite","type":"main","homedir":"/home2/hydrosite"},{"user":"hydrosite_logs","type":"logaccess","homedir":"/etc/apache2/logs/domlogs/hydrosite"}],"exit_code":0,"error":0,"version":"2.4","status":1,"mode":"simple","statusmsg":"Ran adminbin Cpanel/ftp/LISTSTORE"}

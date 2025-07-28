@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --color-primary: theme('colors.primary.500');
+        --color-primary-light: theme('colors.primary.400');
+        --color-primary-dark: theme('colors.primary.600');
+    }
+    
+    body {
+        @apply text-secondary-800 bg-white dark:bg-secondary-900 dark:text-secondary-100;
+    }
+    
+    a {
+        @apply text-primary-600 hover:text-primary-700 transition-colors;
+    }
+    
+    button, .btn {
+        @apply bg-primary-500 text-white hover:bg-primary-600 transition-colors;
+    }
+    
+    .card {
+        @apply bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-sm;
+    }
+}

@@ -1,0 +1,5 @@
+check_dynamic_reverse_dns_default
+check_dynamic_reverse_dns
+check_reverse_dns_list
+local_require_auth
+rfc_mail_from

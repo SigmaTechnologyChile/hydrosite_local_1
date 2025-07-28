@@ -1,0 +1,253 @@
+/* estilos-lecturas.css - Estilos modernos para tarjetas de registro de lecturas */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(120deg, #eaf6ff 0%, #f8f9fa 100%);
+    padding: 0;
+    min-height: 100vh;
+}
+.reading-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(44,62,80,0.12);
+    overflow: hidden;
+    border: 1px solid #e3eaf3;
+}
+.header {
+    background: linear-gradient(90deg, #3498db 0%, #6dd5fa 100%);
+    color: #fff;
+    padding: 38px 40px 28px 40px;
+    text-align: center;
+    border-bottom: 1px solid #e3eaf3;
+}
+.header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+.header p {
+    opacity: 0.92;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+.content {
+    padding: 38px 40px;
+}
+.form-group {
+    margin-bottom: 22px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+.form-group select, .form-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #dbe7f6;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1.05rem;
+    background-color: #f4f8fb;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group select:focus, .form-group input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px #eaf6ff;
+    outline: none;
+    background-color: #fff;
+}
+.form-group select:disabled {
+    background-color: #e9ecef;
+    opacity: 0.7;
+}
+.btn {
+    background: linear-gradient(90deg, #3498db 0%, #6dd5fa 100%);
+    color: #fff;
+    border: none;
+    padding: 13px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.08rem;
+    font-weight: 700;
+    transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+}
+.btn:hover {
+    background: linear-gradient(90deg, #2980b9 0%, #3498db 100%);
+    box-shadow: 0 6px 18px rgba(44,62,80,0.13);
+    transform: translateY(-2px) scale(1.03);
+}
+.btn:active {
+    transform: scale(0.98);
+}
+.btn-outline {
+    background: #fff;
+    border: 2px solid #3498db;
+    color: #3498db;
+    font-weight: 700;
+}
+.btn-outline:hover {
+    background: #eaf6ff;
+    color: #2980b9;
+}
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    gap: 14px;
+    justify-content: center;
+}
+#emailConfig {
+    margin-top: 38px;
+    padding: 28px 24px;
+    background: linear-gradient(90deg, #f4f8fb 0%, #eaf6ff 100%);
+    border-radius: 14px;
+    border: 1.5px solid #dbe7f6;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+.section-title {
+    color: #2980b9;
+    font-size: 1.35rem;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #eaf6ff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.reading-item {
+    background: linear-gradient(90deg, #f4f8fb 0%, #eaf6ff 100%);
+    padding: 18px 22px;
+    margin: 13px 0;
+    border-radius: 10px;
+    border-left: 5px solid #3498db;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+.reading-item:hover {
+    box-shadow: 0 6px 18px rgba(44,62,80,0.13);
+}
+.reading-item strong {
+    color: #34495e;
+    font-size: 1.12rem;
+    display: block;
+    margin-bottom: 7px;
+}
+.reading-item .delete-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(90deg, #e74c3c 0%, #ff7675 100%);
+    color: #fff;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(231,76,60,0.12);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.reading-item .delete-btn:hover {
+    background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+    box-shadow: 0 6px 18px rgba(231,76,60,0.18);
+}
+#readingsList {
+    margin-top: 38px;
+}
+.empty-state {
+    text-align: center;
+    padding: 38px 18px;
+    color: #95a5a6;
+    font-size: 1.08rem;
+}
+.empty-state i {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+.stats {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(90deg, #eaf6ff 0%, #f4f8fb 100%);
+    padding: 13px 18px;
+    border-radius: 10px;
+    margin-top: 18px;
+    font-weight: 700;
+    color: #34495e;
+    font-size: 1.08rem;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.05);
+}
+@media (max-width: 768px) {
+    .content {
+        padding: 18px;
+    }
+    .header {
+        padding: 18px;
+    }
+    .header h1 {
+        font-size: 1.4rem;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #emailConfig {
+        padding: 16px;
+    }
+}
+@media (min-width: 768px) {
+    .form-row {
+        display: flex;
+        gap: 22px;
+    }
+    .form-row .form-group {
+        flex: 1;
+    }
+}
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 18px;
+    padding-right: 44px;
+}
+.ios-fix {
+    position: relative;
+}
+.ios-fix::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 44px;
+    background: transparent;
+    pointer-events: none;
+}

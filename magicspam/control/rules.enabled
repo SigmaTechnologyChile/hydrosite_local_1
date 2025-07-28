@@ -1,0 +1,13 @@
+block_ip_in_addr
+check_dynamic_reverse_dns_default
+check_dynamic_reverse_dns
+check_confirmed_dyna
+check_ip_reverse_dns
+check_reverse_dns_list
+local_require_auth
+require_helo
+valid_helo_domain
+rfc_mail_from
+require_full_addr
+valid_from_domain
+valid_ptr

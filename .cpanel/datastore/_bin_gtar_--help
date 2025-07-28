@@ -1,0 +1,388 @@
+Modo de empleo: gtar [OPCIÓN...] [FICHERO]...
+GNU 'tar' saves many files together into a single tape or disk archive, and can
+restore individual files from the archive.
+
+Examples:
+  tar -cf archive.tar foo bar  # Create archive.tar from files foo and bar.
+  tar -tvf archive.tar         # List all files in archive.tar verbosely.
+  tar -xf archive.tar          # Extract all files from archive.tar.
+
+ Selección del fichero local:
+
+      --add-file=FICHERO     añade el FICHERO dado al archivo (útil si su
+                             nombre comienza con un guion)
+  -C, --directory=DIR        cambia al directorio DIR
+      --exclude=PATRÓN      excluye ficheros, dados como un PATRÓN
+      --exclude-backups      excluye los ficheros de respaldo y de bloqueo
+      --exclude-caches       excluye el contenido de los directorios que
+                             contienen CACHEDIR.TAG, excepto por el propio
+                             fichero CACHEDIR.TAG
+      --exclude-caches-all   excluye los directorios que contienen CACHEDIR.TAG
+                            
+      --exclude-caches-under excluye todo bajo los directorios que contienen
+                             CACHEDIR.TAG
+      --exclude-ignore=FICHERO   leer en FICHERO, si existe, los patrones de
+                             exclusión oara cada directorio
+      --exclude-ignore-recursive=FICHERO
+                             leer en FICHERO, si existe, los patrones de
+                             exclusión oara cada directorio sus
+                             subdirectorios
+      --exclude-tag=FICHERO  excluye el contenido de los directorios que
+                             contengan FICHERO, excepto el propio FICHERO
+      --exclude-tag-all=FICHERO   excluye los directorios que contengan
+                             FICHERO
+      --exclude-tag-under=FICHERO
+                             exclute todo bajo los directorios que contengan
+                             FICHERO
+      --exclude-vcs          excluye los directorios de sistemas de control de
+                             versiones
+      --exclude-vcs-ignores  lee los patrones de exclusión de los ficheros de
+                             descarte de VCS
+      --no-null              desactiva el efecto de la opción --null anterior
+      --no-recursion         evita descender automáticamente en los
+                             directorios
+      --no-unquote           no quita las comillas de los nombres de ficheros
+                             de entrada o de miembros
+      --no-verbatim-files-from   -T trata los nombres de fichero que comienzan
+                             con guión como opciones (predeterminado)
+      --null                 -T lee nombres terminados en nulo; implica
+                             --verbatim-files-from
+      --recursion            opera recursivamente sobre los directorios (por
+                             omisión)
+  -T, --files-from=FICHERO   obtiene los nombres que se van a extraer o crear
+                             de FICHERO
+      --unquote              quita las comillas de los nombres de ficheros de
+                             entrada o de miembros (predeterminado)
+      --verbatim-files-from  -T reads file names verbatim (no escape or option
+                             handling)
+  -X, --exclude-from=FICHERO excluye los patrones listados en FICHERO
+
+ opciones de coincidencia para nombres de fichero (afectan a los patrones de
+ exclusión y de inclusión):
+
+      --anchored             los patrones encajan con el comienzo del nombre
+                             del fichero
+      --ignore-case          no distingue mayúsculas de minúsculas
+      --no-anchored          los patrones encajan después de cualquier `/'
+                             (por omisión para exclusión)
+      --no-ignore-case       distingue mayúsculas de minúsculas (por
+                             omisión)
+      --no-wildcards         coincidencia de cadenas verbatim
+      --no-wildcards-match-slash   los comodines no encajan con `/'
+      --wildcards            use wildcards (default)
+      --wildcards-match-slash   los comodines encajan con `/' (por omisión
+                             para exclusión)
+
+ Modo principal de operación:
+
+  -A, --catenate, --concatenate   añade ficheros tar a un archivo
+  -c, --create               crea un nuevo archivo
+  -d, --diff, --compare      encuentra las diferencias entre un archivo y el
+                             sistema de ficheros
+      --delete               borra del archivo (¡no en cintas magnéticas!)
+  -r, --append               añade ficheros al final de un archivo
+  -t, --list                 lista el contenido de un archivo
+      --test-label           comprueba la etiqueta de volumen del archivo y
+                             finaliza
+  -u, --update               solamente añade ficheros más recientes que la
+                             copia del archivo
+  -x, --extract, --get       extrae ficheros de un archivo
+
+ Modificadores de operación:
+
+      --check-device         comprueba los números de dispositivo cuando se
+                             crean archivos incrementales (por omisión)
+  -g, --listed-incremental=FICHERO
+                             maneja el nuevo formato GNU de respaldo
+                             incremental
+  -G, --incremental          maneja el formato GNU antiguo de respaldo
+                             incremental
+      --hole-detection=TIPO  técnica para detectar huecos
+      --ignore-failed-read   no sale con estado distinto de cero cuando hay
+                             ficheros ilegibles
+      --level=NÚMERO        nivel de volcado para archivo creado con listado
+                             incremental
+  -n, --seek                 el archivo admite `seek'
+      --no-check-device      no comprueba los números de dispositivo cuando se
+                             crean archivos incrementales
+      --no-seek              el archivo no admite `seek'
+      --occurrence[=NÚMERO] procesa únicamente la NÚMERO-ésima aparición
+                             de cada fichero en el archivo; esta opción
+                             solamente es válida junto con una de las
+                             subórdenes --delete, --diff, --extract o --list y
+                             cuando se da una lista de ficheros en la línea de
+                             órdenes o con la opción -T; el valor
+                             predeterminado de NUM es 1.
+      --sparse-version=PRINCIPAL[.SECUNDARIO]
+                             establece la versión del formato disperso que se
+                             usará (implica --sparse)
+  -S, --sparse               maneja ficheros dispersos de forma eficiente
+
+ Control de sobreescritura:
+
+  -k, --keep-old-files       no reemplaza ficheros que existan al extraer, los
+                             trata como errores
+      --keep-directory-symlink   conserva los enlaces simbólicos a directorios
+                             que existan al extraer
+      --keep-newer-files     no reemplaza los ficheros que existan que sean
+                             más recientes que sus copias en el archivo
+      --no-overwrite-dir     conserva los metadatos de los directorios que
+                             existan
+      --one-top-level[=DIR]  crea un subdirectorio para no tener ficheros
+                             sueltos al hacer la extracción
+      --overwrite            sobreescribe los ficheros que existan al extraer
+      --overwrite-dir        sobreescribe los metadatos de los directorios que
+                             existan al extraer (predeterminado)
+      --recursive-unlink     vacía jerarquías antes de extraer directorios
+      --remove-files         borra los ficheros después de añadirlos al
+                             archivo
+      --skip-old-files       no reemplaza ficheros que existan al extraer, se
+                             los salta silenciosamente
+  -U, --unlink-first         borra cada fichero antes de extraer sobre él
+  -W, --verify               intenta verificar el archivo después de
+                             escribirlo
+
+ Selección del flujo de salida:
+
+      --ignore-command-error descarta los códigos de salida de los procesos
+                             hijos
+      --no-ignore-command-error   trata los estados de salida distintos de cero
+                             de los hijos como errores
+  -O, --to-stdout            extrae los ficheros a la salida estándar
+      --to-command=ORDEN     extrae los ficheros a otro programa
+
+ Manejo de los atributos del fichero:
+
+      --atime-preserve[=MÉTODO]   conserva las horas de acceso en los ficheros
+                             volcados, bien restaurando las horas después de
+                             leer (MÉTOOD='replace'; predeterminado), bien no
+                             poniendo las horas en primer lugar
+                             (MÉTODO='system')
+      --clamp-mtime          solo pone la hora cuando el fichero es más
+                             reciente que lo que se indicó con -mtime
+      --delay-directory-restore   demora el establecimiento de las fechas de
+                             modificación y los permisos de los directorios
+                             que se extraen hasta el final de la extracción
+      --group=NOMBRE         fuerza NOMBRE como grupo para los ficheros que se
+                             añaden
+      --group-map=FICHERO    utiliza FICHERO para asociar GIDs de propietarios
+                             y nombres de ficheros
+      --mode=CAMBIOS         fuerza CAMBIOS (simbólicos) de modo para los
+                             ficheros que se añaden
+      --mtime=FECHA-O-FICHERO   establece la fecha de modificación para los
+                             ficheros que se añaden a partir de
+                             FECHA-O-FICHERO
+  -m, --touch                no extrae la fecha de modificación del fichero
+      --no-delay-directory-restore
+                             cancela el efecto de la opción
+                             --delay-directory-restore
+      --no-same-owner        extrae los ficheros como usted mismo
+                             (predeterminado para usuarios normales)
+      --no-same-permissions  aplica el umask del usuario cuando se extraen
+                             permisos del archivo (predeterminado para usuarios
+                             normales)
+      --numeric-owner        utiliza siempre números para los nombres de
+                             usuarios/grupos
+      --owner=NOMBRE         fuerza NOMBRE como propietario de los ficheros que
+                             se añaden
+      --owner-map=FICHERO    utiliza FICHERO para asociar UIDs de propietarios
+                             y nombres de ficheros
+  -p, --preserve-permissions, --same-permissions
+                             extrae la información de los permisos de los
+                             ficheros (por omisión para el superusuario)
+      --same-owner           intenta extraer los ficheros con el mismo
+                             propietario que existe en el archivo
+                             (predeterminado para el superusuario)
+  -s, --preserve-order, --same-order
+                             se listan los miembros en el mismo orden que los
+                             ficheros del archivo
+      --sort=ORDEN           orden de ordenación del directorio: ninguno
+                             (predeterminado), nombre o nodo-i
+
+ Manejo de los atributos extendidos del fichero:
+
+      --acls                 Activa el soporte de ACLs de POSIX
+      --no-acls              Desactiva el soporte de ACLs de POSIX
+      --no-selinux           Desactiva el soporte de contextos SELinux
+      --no-xattrs            Desactiva el soporte de atributos extendidos
+      --selinux              Activa el soporte de contextos SELinux
+      --xattrs               Activa el soporte de los atributos extendidos
+      --xattrs-exclude=MÁSCARA   especifica el patrón de exclusión para las
+                             claves xattr
+      --xattrs-include=MÁSCARA   especifica el patrón de inclusión para las
+                             claves xattr
+
+ Selección de dispositivo y opciones:
+
+  -f, --file=ARCHIVO         utiliza un archivo o el dispositivo ARCHIVO
+      --force-local          el archivo es local incluso si tiene dos puntos
+  -F, --info-script=NOMBRE, --new-volume-script=NOMBRE
+                             ejecuta un script al final de cada cinta (implica
+                             -M)
+  -L, --tape-length=NÚMERO  cambia la cinta después de escribir NÚMERO x
+                             1024 bytes
+  -M, --multi-volume         crea/lista/extrae un archivo multivolumen
+      --rmt-command=ORDEN    utiliza la ORDEN rmt dada en vez de rmt
+      --rsh-command=ORDEN    utiliza la ORDEN remota en vez de rsh
+      --volno-file=FICHERO   usa/actualiza el número de volumen en FICHERO
+
+ Bloques en los dispositivos:
+
+  -b, --blocking-factor=BLOQUES   BLOQUES x 512 bytes por registro
+  -B, --read-full-records    rehace los bloques conforme se lee (para tuberías
+                             de 4.2BSD)
+  -i, --ignore-zeros         no tiene en cuenta los bloques convertidos en
+                             ceros dentro de un archivo (significa fin de
+                             fichero)
+      --record-size=NÚMERO  NÚMERO de bytes por registro, múltiplo de 512
+
+ Selección del formato de archivo:
+
+  -H, --format=FORMATO       crea un archivo en el formato dado
+
+ FORMATO es uno de los siguientes:
+
+    gnu                      formato GNU tar 1.13.x
+    oldgnu                   formato GNU de tar <= 1.12
+    pax                      formato POSIX 1003.1-2001 (pax)
+    posix                    lo mismo que pax
+    ustar                    formato POSIX 1003.1-1988 (ustar)
+    v7                       formato tar V7 antiguo
+
+      --old-archive, --portability
+                             lo mismo que --format=v7
+      --pax-option=palabra[[:]=valor][,palabra[[:]=valor]]...
+                             palabras clave de control de pax
+      --posix                lo mismo que --format=posix
+  -V, --label=TEXTO          crea un archivo con nombre de volumen TEXTO; en el
+                             momento de listar/extraer, utiliza TEXTO como
+                             patrón expandible para el nombre del volumen
+
+ Opciones de compresión:
+
+  -a, --auto-compress        utiliza el sufijo del archivo para determinar el
+                             programa de compresión
+  -I, --use-compress-program=PROG
+                             filtra a través de PROG (debe aceptar -d)
+  -j, --bzip2                filtra el archivo a través de bzip2
+  -J, --xz                   filtra el archivo a través de xz
+      --lzip                 filtra el archivo a través de lzip
+      --lzma                 filtra el archivo a través de xz --format=lzma
+      --lzop                 filtra el archivo a través de lzop
+      --no-auto-compress     no utiliza el sufijo del archivo para determinar
+                             el programa de compresión
+  -z, --gzip, --gunzip, --ungzip   filtra el archivo a través de gzip
+  -Z, --compress, --uncompress   filtra el archivo a través de compress
+
+ Selección del fichero local:
+
+      --backup[=CONTROL]     se hace un respaldo antes de borrar, escoja el
+                             CONTROL de versión
+  -h, --dereference          sigue los enlaces simbólicos; archiva y vuelca
+                             los ficheros a los que apuntan
+      --hard-dereference     sigue los enlaces duros; archiva y vuelca los
+                             ficheros a los que se refieren
+  -K, --starting-file=NOMBRE-DE-MIEMBRO
+                             comienza por el miembro NOMBRE-DE-MIEMBRO al leer
+                             el archivo
+      --newer-mtime=FECHA    compara la fecha y hora solamente cuando cambian
+                             los datos
+  -N, --newer=FECHA-O-FICHERO, --after-date=FECHA-O-FICHERO
+                             almacena solamente ficheros más recientes que
+                             FECHA-O-FICHERO
+      --one-file-system      permanece en el sistema de ficheros locales al
+                             crear el archivo
+  -P, --absolute-names       no elimina las '/'s iniciales de los nombres de
+                             ficheros
+      --suffix=CADENA        se hace un respaldo antes de borrar, cambiando el
+                             sufijo usual ('~' a menos que se
+                             cambie con la variable de entorno
+                             SIMPLE_BACKUP_SUFFIX)
+
+ Transformaciones de los nombres de ficheros:
+
+      --strip-components=NÚMERO   elimina NÚMERO componentes iniciales de los
+                             nombres de ficheros al extraer
+      --transform=EXPRESIÓN, --xform=EXPRESIÓN
+                             utiliza la EXPRESIÓN de reemplazo sed para
+                             transformar los nombres de ficheros
+
+ Salida informativa:
+
+      --checkpoint[=NÚMERO] muestra mensajes de progreso cada NÚMERO-ésimo
+                             registro (por omisión 10)
+      --checkpoint-action=ACCIÓN
+                             ejecuta ACCIÓN en cada punto de comprobación
+      --full-time            muestra la fecha del fichero con la máxima
+                             resolución
+      --index-file=FICHERO   envía la salida detallada a FICHERO
+  -l, --check-links          muestra un mensaje si no se vuelcan todos los
+                             enlaces
+      --no-quote-chars=CADENA   no entrecomilla los caracteres de CADENA
+      --quote-chars=CADENA   también entrecomilla los caracteres de CADENA
+      --quoting-style=ESTILO establece el estilo de cita de los nombres;
+                             véanse más abajo los valores ESTILO válidos
+  -R, --block-number         muestra el número de bloque dentro del archivo
+                             con cada mensaje
+      --show-defaults        muestra los valores predeterminados de tar
+      --show-omitted-dirs    cuando se lista o extrae, lista cada directorio
+                             que no coincida con el criterio de búsqueda
+      --show-snapshot-field-ranges
+                             muestra los rangos válidos para los campos de
+                             fichero de instantánea
+      --show-transformed-names, --show-stored-names
+                             muestra los nombres de los ficheros o los archivos
+                             después de la transformación
+      --totals[=SEÑAL]      muestra los bytes totales después de procesar el
+                             archivo; con un argumento - muestra los bytes
+                             totales cuando se entrega esta SEÑAL; señales
+                             permitidas: SIGHUP, SIGQUIT, SIGINT, SIGUSR1 y
+                             SIGUSR2; también se aceptan los nombres sin el
+                             prefijo SIG
+      --utc                  muestra las fechas/horas de modificación de los
+                             ficheros en UTC
+  -v, --verbose              lista los ficheros procesados detalladamente
+      --warning=PALABRACLAVE control de advertencia
+  -w, --interactive, --confirmation
+                             pide confirmación para cada acción
+
+ Opciones de compatibilidad:
+
+  -o                         al crear, lo mismo que --old-archive; al extraer,
+                             lo mismo que --no-same-owner
+
+ Otras opciones:
+
+  -?, --help                 da esta lista de ayuda
+      --restrict             desactivo el uso de algunas opciones
+                             potencialmente peligrosas
+      --usage                da un mensaje de uso corto
+      --version              muestra la versión del programa
+
+Los argumentos obligatorios u opcionales para las opciones largas son también
+obligatorios u opcionales para las opciones cortas correspondientes.
+
+The backup suffix is '~', unless set with --suffix or SIMPLE_BACKUP_SUFFIX.
+The version control may be set with --backup or VERSION_CONTROL, values are:
+
+  none, off       never make backups
+  t, numbered     make numbered backups
+  nil, existing   numbered if numbered backups exist, simple otherwise
+  never, simple   always make simple backups
+
+Los argumentos válidos para la opción --quoting-style son:
+
+  literal
+  shell
+  shell-always
+  shell-escape
+  shell-escape-always
+  c
+  c-maybe
+  escape
+  locale
+  clocale
+
+Las opciones predeterminadas de *esta* versión de tar son:
+--format=gnu -f- -b20 --quoting-style=escape --rmt-command=/etc/rmt
+--rsh-command=/usr/bin/ssh

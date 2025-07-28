@@ -1,0 +1,3 @@
+[12-Jul-2025 12:39:39 -0400]: <af926d43> [5 ERR] Database::get (SELECT * FROM carddav_addressbooks WHERE (("user_id" = '1'))) ERROR: [1] no such table: carddav_addressbooks 
+[12-Jul-2025 12:39:39 -0400]: <af926d43> [5 ERR] Error reading carddav addressbooks: [1] no such table: carddav_addressbooks 
+[12-Jul-2025 12:39:39 -0400]: <af926d43> [5 ERR] Database::get (SELECT "filename" FROM carddav_migrations) ERROR: [1] no such table: carddav_migrations 

@@ -1,0 +1,18 @@
+INSERT INTO categorias (nombre, tipo, grupo) VALUES
+('Venta de Agua (Total Consumo)', 'ingreso', NULL),
+('Cuotas de Incorporación (Cuotas de Incorporación)', 'ingreso', NULL),
+('Venta de Medidores (Otros Ingresos)', 'ingreso', NULL),
+('Trabajos en Domicilio (Otros Ingresos)', 'ingreso', NULL),
+('Subsidios (Otros Ingresos)', 'ingreso', NULL),
+('Otros Aportes (Otros Ingresos)', 'ingreso', NULL),
+('Multas Inasistencia (Otros Ingresos)', 'ingreso', NULL),
+('Otras Multas (Otros Ingresos)', 'ingreso', NULL),
+('Energía Eléctrica (Gastos de Operación)', 'egreso', NULL),
+('Sueldos y Leyes Sociales (Gastos de Operación)', 'egreso', NULL),
+('Otras Ctas. (Agua, Int. Cel.) (Gastos de Operación)', 'egreso', NULL),
+('Mantención y reparaciones Instalaciones (Gastos de Mantención)', 'egreso', NULL),
+('Insumos y Materiales (Oficina) (Gastos de Administración)', 'egreso', NULL),
+('Materiales e Insumos (Red) (Gastos de Mejoramiento)', 'egreso', NULL),
+('Viáticos / Seguros / Movilización (Otros Gastos)', 'egreso', NULL),
+('Gastos por Trabajos en domicilio (Gastos de Mantención)', 'egreso', NULL),
+('Mejoramiento / Inversiones (Gastos de Mejoramiento)', 'egreso', NULL);

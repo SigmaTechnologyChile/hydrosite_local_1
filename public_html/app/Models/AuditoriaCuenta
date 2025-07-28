@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AuditoriaCuenta extends Model
+{
+    protected $table = 'auditoria_cuentas';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'cuenta_id', 'saldo_anterior', 'saldo_nuevo', 'cambio', 'usuario', 'modificado_en'
+    ];
+
+    public function cuenta()
+    {
+        return $this->belongsTo(Cuenta::class);
+    }
+}

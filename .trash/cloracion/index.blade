@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cloración - Comité APR Las Atoladas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e6f7ff 0%, #f0f8ff 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #0066cc 0%, #003d99 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #0066cc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .header-text h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        
+        .header-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .date-info {
+            text-align: right;
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .date-info p {
+            margin: 5px 0;
+            font-size: 1.1rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .info-card h2 {
+            color: #0066cc;
+            border-bottom: 2px solid #e6f7ff;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-card h2 i {
+            font-size: 1.5rem;
+        }
+        
+        .info-card ul {
+            list-style-type: none;
+        }
+        
+        .info-card li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f8ff;
+            display: flex;
+        }
+        
+        .info-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .info-card li strong {
+            width: 50%;
+            font-weight: 600;
+            color: #0052a3;
+        }
+        
+        .dashboard {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        .dashboard h2 {
+            color: #0066cc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .metric-card.warning {
+            background: linear-gradient(135deg, #fff8e6 0%, #fff0f0 100%);
+            border: 2px solid #ffcc00;
+        }
+        
+        .metric-card.critical {
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffd9d9 100%);
+            border: 2px solid #ff3333;
+        }
+        
+        .metric-card h3 {
+            color: #0052a3;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+        
+        .metric-card.warning .metric-value {
+            color: #e68a00;
+        }
+        
+        .metric-card.critical .metric-value {
+            color: #cc0000;
+        }
+        
+        .metric-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .chart-box {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .chart-box h3 {
+            color: #0052a3;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        canvas {
+            width: 100% !important;
+            height: 300px !important;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .results-table th {
+            background: linear-gradient(90deg, #0066cc 0%, #0047b3 100%);
+            color: white;
+            text-align: left;
+            padding: 15px;
+        }
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .results-table tr:nth-child(even) {
+            background-color: #f8fbff;
+        }
+        
+        .results-table tr:hover {
+            background-color: #e6f2ff;
+        }
+        
+        .within-limit {
+            color: #009900;
+            font-weight: 600;
+        }
+        
+        .exceeds-limit {
+            color: #cc0000;
+            font-weight: 600;
+        }
+        
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        .results-section h2 {
+            color: #0066cc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        
+        .summary {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        .summary h2 {
+            color: #0066cc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .summary-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 10px;
+        }
+        
+        .summary-item i {
+            font-size: 24px;
+            color: #0066cc;
+            margin-right: 15px;
+        }
+        
+        .summary-text h3 {
+            color: #0052a3;
+            margin-bottom: 5px;
+        }
+        
+        .summary-text p {
+            color: #666;
+        }
+        
+        @media (max-width: 900px) {
+            .chart-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .logo-container {
+                justify-content: center;
+            }
+            
+            .date-info {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="header-text">
+                    <h1>Registro de Cloración</h1>
+                    <p>Comité De Agua Potable Rural Las Atoladas</p>
+                </div>
+            </div>
+            <div class="date-info">
+                <p><i class="fas fa-calendar-alt"></i> Fecha de muestra: 04-07-2024</p>
+                <p><i class="fas fa-flask"></i> Fecha de análisis: 04-07-2024 al 12-07-2024</p>
+                <p><i class="fas fa-file-alt"></i> Informe N°: QL-513915</p>
+            </div>
+        </header>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h2><i class="fas fa-user-circle"></i> Identificación del Cliente</h2>
+                <ul>
+                    <li><strong>Nombre/Razón Social:</strong> Comité De Agua Potable Rural Las Atoladas</li>
+                    <li><strong>RUT:</strong> 71 08700-1</li>
+                    <li><strong>Dirección:</strong> Callejón la Copa la Atolada, Tano</li>
+                    <li><strong>Comuna:</strong> Tene</li>
+                    <li><strong>Teléfono:</strong> 986535372</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h2><i class="fas fa-vial"></i> Identificación de Muestra</h2>
+                <ul>
+                    <li><strong>N° de orden de trabajo:</strong> 0000075583</li>
+                    <li><strong>Código de muestra:</strong> 513915</li>
+                    <li><strong>Tipo de Muestra:</strong> AGUA POTABLE/BEBIDA</li>
+                    <li><strong>ID Muestra:</strong> Agua Potable Para Consumo</li>
+                    <li><strong>Muestreado Por:</strong> Cliente</li>
+                    <li><strong>Fecha toma de muestra:</strong> 04-07-2024 08:30</li>
+                    <li><strong>Fecha recepción de muestra:</strong> 04-07-2024 09:09</li>
+                    <li><strong>Fecha emisión informe:</strong> 12-07-2024</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <h2><i class="fas fa-chart-bar"></i> Dashboard de Resultados</h2>
+            
+            <div class="dashboard-cards">
+                <div class="metric-card">
+                    <h3>Cloro Libre Residual</h3>
+                    <div class="metric-value">0.89 ppm</div>
+                    <div class="metric-desc">(Límite: 0.2 - 2.0 ppm)</div>
+                    <div class="within-limit">Dentro del límite</div>
+                </div>
+                
+                <div class="metric-card warning">
+                    <h3>Turbiedad</h3>
+                    <div class="metric-value">&lt;0.50 UNT</div>
+                    <div class="metric-desc">(Límite máximo: 2.0 UNT)</div>
+                    <div class="within-limit">Dentro del límite</div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>pH</h3>
+                    <div class="metric-value">7.85</div>
+                    <div class="metric-desc">(Límite: 6.5 - 8.5)</div>
+                    <div class="within-limit">Dentro del límite</div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>Nitratos</h3>
+                    <div class="metric-value">15.10 mg/L</div>
+                    <div class="metric-desc">(Límite máximo: 50 mg/L)</div>
+                    <div class="within-limit">Dentro del límite</div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-box">
+                    <h3>Parámetros Principales</h3>
+                    <canvas id="mainParamsChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>Comparación con Límites Máximos</h3>
+                    <canvas id="limitsChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="summary">
+            <h2><i class="fas fa-check-circle"></i> Resumen de Cumplimiento</h2>
+            <div class="summary-content">
+                <div class="summary-item">
+                    <i class="fas fa-check"></i>
+                    <div class="summary-text">
+                        <h3>Calidad General del Agua</h3>
+                        <p>Todos los parámetros esenciales están dentro de los límites permitidos</p>
+                    </div>
+                </div>
+                
+                <div class="summary-item">
+                    <i class="fas fa-tint"></i>
+                    <div class="summary-text">
+                        <h3>Cloración Adecuada</h3>
+                        <p>El nivel de cloro libre residual está dentro del rango óptimo</p>
+                    </div>
+                </div>
+                
+                <div class="summary-item">
+                    <i class="fas fa-vial"></i>
+                    <div class="summary-text">
+                        <h3>Parámetros Físicos</h3>
+                        <p>pH, turbiedad y conductividad dentro de normas</p>
+                    </div>
+                </div>
+                
+                <div class="summary-item">
+                    <i class="fas fa-skull-crossbones"></i>
+                    <div class="summary-text">
+                        <h3>Elementos Tóxicos</h3>
+                        <p>Metales pesados y compuestos tóxicos bajo límites detectables</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <h2><i class="fas fa-table"></i> Resultados Detallados de Análisis</h2>
+            <div class="table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Análisis</th>
+                            <th>Resultado</th>
+                            <th>Unidad</th>
+                            <th>LOD</th>
+                            <th>Límite Máximo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cloro Libre-Residual</td>
+                            <td>0.89</td>
+                            <td>ppm</td>
+                            <td>0.01 ppm</td>
+                            <td>0.2 - 2.00 ppm</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>Turbiedad</td>
+                            <td>&lt;0.50</td>
+                            <td>UNT</td>
+                            <td>0.5 UNT</td>
+                            <td>2.0 UNT</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>pH</td>
+                            <td>7.85</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>6.5 - 8.5</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>Alcalinidad</td>
+                            <td>93</td>
+                            <td>mg CaCO3/L</td>
+                            <td>20 mg/L</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Calcio</td>
+                            <td>81.100</td>
+                            <td>mg Ca/L</td>
+                            <td>0.009 mg/L</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Conductividad eléctrica</td>
+                            <td>494.20</td>
+                            <td>μS/cm</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Dureza Teórica</td>
+                            <td>291.13</td>
+                            <td>mg CaCO3/L</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Nitrato (como NO3)</td>
+                            <td>15.10</td>
+                            <td>mg NO3/L</td>
+                            <td>1 mg/L</td>
+                            <td>50 mg/L</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>Nitrito (como NO2)</td>
+                            <td>&lt;0.10</td>
+                            <td>mg NO2/L</td>
+                            <td>0.1 mg/L</td>
+                            <td>3.0 mg/L</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>Arsénico</td>
+                            <td>0.0062</td>
+                            <td>mg As/L</td>
+                            <td>0.0002 mg/L</td>
+                            <td>0.01 mg/L</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>Mercurio</td>
+                            <td>&lt;0.001</td>
+                            <td>mg Hg/L</td>
+                            <td>0.001 mg/L</td>
+                            <td>0.001 mg/L</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>Plomo</td>
+                            <td>&lt;0.01</td>
+                            <td>mg Pb/L</td>
+                            <td>0.01 mg/L</td>
+                            <td>0.05 mg/L</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <h2><i class="fas fa-list"></i> Parámetros Organolépticos</h2>
+            <div class="table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Parámetro</th>
+                            <th>Resultado</th>
+                            <th>Unidad</th>
+                            <th>Límite Máximo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Olor</td>
+                            <td>INODORA</td>
+                            <td>-</td>
+                            <td>Inodora</td>
+                            <td class="within-limit">Cumple</td>
+                        </tr>
+                        <tr>
+                            <td>Sabor</td>
+                            <td>INSIPIDA</td>
+                            <td>-</td>
+                            <td>Insipida</td>
+                            <td class="within-limit">Cumple</td>
+                        </tr>
+                        <tr>
+                            <td>Color</td>
+                            <td>&lt;5 (pH: 7.65)</td>
+                            <td>Pt-Co</td>
+                            <td>20 Pt-Co</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                        <tr>
+                            <td>Compuestos Fenólicos</td>
+                            <td>&lt;2.0</td>
+                            <td>μg/L</td>
+                            <td>2.0 μg/L</td>
+                            <td class="within-limit">Dentro del límite</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Informe generado el 12-07-2024 | Laboratorio Quadro Luis Bar</p>
+            <p>Los resultados presentados corresponden exclusivamente a la muestra analizada</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Main parameters chart
+        const mainCtx = document.getElementById('mainParamsChart').getContext('2d');
+        const mainParamsChart = new Chart(mainCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Cloro Residual', 'Turbiedad', 'pH', 'Nitratos', 'Dureza', 'Conductividad'],
+                datasets: [{
+                    label: 'Valores',
+                    data: [0.89, 0.45, 7.85, 15.10, 291.13, 494.20],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(255, 206, 86, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Parámetros Principales de Calidad del Agua'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // Limits comparison chart
+        const limitsCtx = document.getElementById('limitsChart').getContext('2d');
+        const limitsChart = new Chart(limitsCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Cloro', 'Turbiedad', 'Arsénico', 'Nitratos', 'Plomo', 'Mercurio'],
+                datasets: [
+                    {
+                        label: 'Resultados',
+                        data: [0.89, 0.45, 0.0062, 15.10, 0.005, 0.0005],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                    },
+                    {
+                        label: 'Límites Máximos',
+                        data: [2.0, 2.0, 0.01, 50.0, 0.05, 0.001],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparación con Límites Permisibles'
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

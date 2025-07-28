@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo Sectores y Clientes</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8fafc; margin: 0; padding: 30px; }
+    .container { max-width: 800px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 30px; }
+    h1 { color: #2c5282; }
+    select, input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 16px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+    th { background: #2c5282; color: white; }
+    tr:nth-child(even) { background: #f8f9fa; }
+    tr:hover { background: #e9f7ff; }
+    .loading { text-align: center; color: #888; }
+    .error { color: red; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Buscar miembros por sector</h1>
+    <label for="sector">Seleccionar Sector:</label>
+    <select id="sector">
+      <option value="">-- Seleccione un sector --</option>
+      <!-- Opciones dinámicas -->
+    </select>
+    <div id="table-container">
+      <div class="loading" id="loading" style="display:none;">Cargando miembros...</div>
+      <div class="error" id="error" style="display:none;"></div>
+      <table id="clientes-table" style="display:none;">
+        <thead>
+          <tr>
+            <th>N° Servicio</th>
+            <th>Sector</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+          </tr>
+        </thead>
+        <tbody id="clientes-tbody">
+          <!-- Filas dinámicas -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    // Demo: cargar sectores desde endpoint Laravel
+    async function cargarSectores() {
+      const select = document.getElementById('sector');
+      try {
+        // Reemplaza la URL por tu endpoint real de sectores
+        const resp = await fetch('/sectores-list');
+        if (!resp.ok) throw new Error('No se pudieron cargar los sectores');
+        const sectores = await resp.json();
+        sectores.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = s.name;
+          select.appendChild(opt);
+        });
+      } catch (e) {
+        document.getElementById('error').textContent = e.message;
+        document.getElementById('error').style.display = 'block';
+      }
+    }
+    cargarSectores();
+
+    document.getElementById('sector').addEventListener('change', async function() {
+      const sectorId = this.value;
+      const loading = document.getElementById('loading');
+      const error = document.getElementById('error');
+      const table = document.getElementById('clientes-table');
+      const tbody = document.getElementById('clientes-tbody');
+      error.style.display = 'none';
+      table.style.display = 'none';
+      tbody.innerHTML = '';
+      if (!sectorId) return;
+      loading.style.display = 'block';
+      try {
+        // Reemplaza la URL por tu endpoint real de clientes por sector
+        const resp = await fetch(`/clientes-por-sector/${encodeURIComponent(sectorId)}`);
+        if (!resp.ok) throw new Error('No se pudieron cargar los miembros');
+        const clientes = await resp.json();
+        if (!Array.isArray(clientes) || clientes.length === 0) {
+          error.textContent = 'No hay miembros en este sector';
+          error.style.display = 'block';
+          loading.style.display = 'none';
+          return;
+        }
+        clientes.forEach(c => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${c.service_id || '-'}</td>
+            <td>${c.sector || '-'}</td>
+            <td>${c.member_name || '-'}</td>
+            <td>${c.address || '-'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+        table.style.display = 'table';
+      } catch (e) {
+        error.textContent = e.message;
+        error.style.display = 'block';
+      } finally {
+        loading.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+# Explicación de tablas: cuentas y configuracion_cuentas_iniciales
+
+## Tabla cuentas
+- Es la tabla maestra de todas las cuentas bancarias o contables de la organización.
+- Guarda información permanente de cada cuenta:
+  - id: identificador único
+  - banco_id: banco asociado
+  - org_id: organización dueña
+  - nombre: nombre de la cuenta (ej: "Caja General")
+  - tipo: tipo de cuenta (caja_general, cuenta_corriente_1, etc.)
+  - saldo_actual: saldo actual de la cuenta
+  - numero_cuenta: número de cuenta bancaria
+  - creado_en: fecha de creación
+- Es la referencia principal para todas las operaciones contables y bancarias.
+
+## Tabla configuracion_cuentas_iniciales
+- Guarda la configuración inicial de las cuentas para un periodo, organización o usuario.
+- Almacena:
+  - org_id: organización
+  - cuenta_id: referencia a la tabla cuentas
+  - saldo_inicial: saldo con el que parte la cuenta
+  - responsable: quién configuró
+  - banco_id: banco seleccionado en la configuración
+  - numero_cuenta: puede ser editable en la configuración inicial
+  - tipo_cuenta: tipo de cuenta, para control interno
+- Permite definir y modificar los saldos y datos iniciales de las cuentas, sin alterar la definición base de la cuenta.
+
+## Flujo de uso
+1. Al iniciar, se ingresan los saldos iniciales desde el modal de configuración. Esto se guarda en configuracion_cuentas_iniciales.
+2. La tabla cuentas mantiene el saldo actual y se actualiza con cada movimiento (ingresos/egresos).
+3. configuracion_cuentas_iniciales solo guarda el punto de partida (histórico), cuentas refleja el saldo en tiempo real.
+
+Así puedes consultar el saldo inicial y el saldo actual de cada cuenta en cualquier momento.

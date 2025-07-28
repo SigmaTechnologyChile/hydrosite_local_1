@@ -1,0 +1,166 @@
+<?php
+/**
+ * CORRECCIÓN DIRECTA PARA ReadingController.php
+ * Reemplaza el método export() problemático
+ */
+
+echo "<h2>🔧 Corrección del método export() en ReadingController</h2>";
+
+// Buscar el archivo en diferentes ubicaciones posibles
+$possiblePaths = [
+    __DIR__ . '/app/Http/Controllers/Org/ReadingController.php',
+    __DIR__ . '/app/Http/Controllers/ReadingController.php',
+    __DIR__ . '/../app/Http/Controllers/Org/ReadingController.php',
+    __DIR__ . '/../app/Http/Controllers/ReadingController.php',
+];
+
+$controllerPath = null;
+foreach ($possiblePaths as $path) {
+    if (file_exists($path)) {
+        $controllerPath = $path;
+        echo "<p>✅ Archivo encontrado en: " . str_replace(__DIR__, '.', $path) . "</p>";
+        break;
+    }
+}
+
+if (!$controllerPath) {
+    echo "<p>🔍 Buscando ReadingController.php en todo el proyecto...</p>";
+    
+    // Buscar recursivamente
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator(__DIR__),
+        RecursiveIteratorIterator::LEAVES_ONLY
+    );
+    
+    foreach ($iterator as $file) {
+        if ($file->isFile() && $file->getFilename() === 'ReadingController.php') {
+            $controllerPath = $file->getPathname();
+            echo "<p>✅ Archivo encontrado en: " . str_replace(__DIR__, '.', $controllerPath) . "</p>";
+            break;
+        }
+    }
+    
+    if (!$controllerPath) {
+        echo "<p>❌ Error: No se encontró ReadingController.php en ninguna ubicación.</p>";
+        echo "<p>📁 Estructura del proyecto:</p>";
+        echo "<pre>";
+        
+        // Mostrar estructura de carpetas
+        function showDirectory($dir, $prefix = '') {
+            if (!is_dir($dir)) return;
+            $items = scandir($dir);
+            foreach ($items as $item) {
+                if ($item === '.' || $item === '..') continue;
+                $path = $dir . '/' . $item;
+                if (is_dir($path)) {
+                    echo $prefix . "📁 " . $item . "/\n";
+                    if ($prefix === '' && in_array($item, ['app', 'Http', 'Controllers'])) {
+                        showDirectory($path, $prefix . '  ');
+                    }
+                } else {
+                    if (strpos($item, 'Controller.php') !== false) {
+                        echo $prefix . "📄 " . $item . "\n";
+                    }
+                }
+            }
+        }
+        
+        showDirectory(__DIR__);
+        echo "</pre>";
+        die();
+    }
+}
+
+// Leer contenido actual
+$content = file_get_contents($controllerPath);
+
+// Buscar la línea problemática específica (línea 595 según el error)
+$lines = explode("\n", $content);
+$foundProblem = false;
+
+for ($i = 590; $i < 600; $i++) {
+    if (isset($lines[$i]) && strpos($lines[$i], 'new ReadingsExport()') !== false) {
+        echo "<p>✅ Problema encontrado en línea " . ($i + 1) . "</p>";
+        echo "<pre>Línea problemática: " . htmlspecialchars($lines[$i]) . "</pre>";
+        $foundProblem = true;
+        break;
+    }
+}
+
+if (!$foundProblem) {
+    echo "<p>🔍 Buscando patrón 'new ReadingsExport()' en todo el archivo...</p>";
+    
+    // Buscar en todo el archivo
+    $pattern = '/new\s+ReadingsExport\s*\(\s*\)/';
+    if (preg_match($pattern, $content, $matches, PREG_OFFSET_CAPTURE)) {
+        echo "<p>✅ Patrón encontrado: " . htmlspecialchars($matches[0][0]) . "</p>";
+        
+        // Reemplazar con la versión corregida
+        $correctedContent = preg_replace(
+            $pattern,
+            'new ReadingsExport($id, $filters)',
+            $content
+        );
+        
+        // También necesitamos asegurar que el método tenga los parámetros correctos
+        $methodPattern = '/public\s+function\s+export\s*\([^)]*\)/';
+        if (preg_match($methodPattern, $correctedContent)) {
+            $correctedContent = preg_replace(
+                $methodPattern,
+                'public function export(Request $request, $id)',
+                $correctedContent
+            );
+        }
+        
+        // Agregar la extracción de filtros si no existe
+        if (strpos($correctedContent, '$filters = $request->only') === false) {
+            $filterExtraction = '
+        // Obtener filtros del request
+        $filters = $request->only([
+            \'date_start\',
+            \'date_end\',
+            \'reading_type\',
+            \'status\',
+            \'search\'
+        ]);
+        
+        ';
+            
+            // Insertar antes de la línea new ReadingsExport
+            $correctedContent = str_replace(
+                'new ReadingsExport($id, $filters)',
+                $filterExtraction . 'new ReadingsExport($id, $filters)',
+                $correctedContent
+            );
+        }
+        
+        // Hacer backup
+        $backupPath = $controllerPath . '.backup.' . date('Y-m-d_H-i-s');
+        copy($controllerPath, $backupPath);
+        echo "<p>✅ Backup creado: " . basename($backupPath) . "</p>";
+        
+        // Guardar archivo corregido
+        if (file_put_contents($controllerPath, $correctedContent) !== false) {
+            echo "<p>✅ Archivo corregido exitosamente!</p>";
+            echo "<div style='background: #e8f5e8; padding: 10px; border-radius: 5px; margin: 10px 0;'>";
+            echo "<strong>Cambios aplicados:</strong><br>";
+            echo "• Método export() ahora acepta Request \$request y \$id<br>";
+            echo "• Se extraen filtros del request<br>";
+            echo "• ReadingsExport recibe los argumentos requeridos (\$id, \$filters)<br>";
+            echo "</div>";
+            echo "<p>🔥 <strong>IMPORTANTE:</strong> Ejecuta ahora el script de limpieza de caché.</p>";
+        } else {
+            echo "<p>❌ Error al guardar el archivo corregido.</p>";
+        }
+    } else {
+        echo "<p>❌ No se encontró el patrón 'new ReadingsExport()' en el archivo.</p>";
+    }
+}
+
+echo "<hr>";
+echo "<p><a href='clear_cache_web.php'>🧹 Ejecutar limpieza de caché</a></p>";
+?>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+</style>

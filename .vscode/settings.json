@@ -1,0 +1,31 @@
+{
+  "workbench.editor.enablePreview": false,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "workbench.editorAssociations": {
+    "*.md": "default"
+  },
+  "security.workspace.trust.enabled": false,
+  "extensions.supportUntrustedWorkspaces": true
+}
+{
+  "files.watcherExclude": {
+    "**/.git/objects/**": false,
+    "**/.git/subtree-cache/**": false,
+    "**/node_modules/*/**": false
+  },
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false
+}
+{
+  "github.copilot.advanced": {
+    "debug.overrideWorkspaceConfig": true,
+    "debug.testOverrideProxyUrl": "",
+    "debug.overrideProxyUrl": ""
+  },
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": "on"
+  }
+}
