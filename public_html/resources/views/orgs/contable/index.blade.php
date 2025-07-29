@@ -168,10 +168,10 @@
           <!-- Columna 1 -->
           <div>
             <label for="fecha-ingresos">Fecha</label>
-            <input type="date" id="fecha-ingresos" name="fecha" required style="width: 100%;" readonly>
+            <input type="date" id="fecha-ingresos" name="fecha" required style="width: 100%;">
 
             <label for="nro-dcto-ingresos">N° Comprobante</label>
-            <input type="text" id="nro-dcto-ingresos" name="nro_dcto" placeholder="Ingrese número de comprobante" required style="width: 100%;" readonly>
+            <input type="text" id="nro-dcto-ingresos" name="nro_dcto" placeholder="Ingrese número de comprobante" required style="width: 100%;">
 
             <label for="categoria-ingresos">Categoría de Ingreso</label>
             <select id="categoria-ingresos" name="categoria" required style="width: 100%;">
@@ -229,10 +229,10 @@
           <!-- Columna 1 -->
           <div>
             <label for="fecha-egresos">Fecha</label>
-            <input type="date" id="fecha-egresos" name="fecha" required style="width: 100%;" readonly>
+            <input type="date" id="fecha-egresos" name="fecha" required style="width: 100%;">
 
             <label for="nro-dcto-egresos">N° Boleta/Factura</label>
-            <input type="text" id="nro-dcto-egresos" name="nro_dcto" placeholder="Ingrese número de comprobante" required style="width: 100%;" readonly>
+            <input type="text" id="nro-dcto-egresos" name="nro_dcto" placeholder="Ingrese número de comprobante" required style="width: 100%;">
 
             <label for="categoria-egresos">Categoría de Egreso</label>
             <select id="categoria-egresos" name="categoria" required style="width: 100%;">
@@ -300,11 +300,7 @@
           <div style="display: grid; grid-template-columns: 1fr; gap: 0px 0px;">
             <div class="form-group">
               <label for="fecha-giro">Fecha</label>
-              <input type="date" id="fecha-giro" name="fecha" required style="width: 100%;" readonly>
-            </div>
-            <div class="form-group">
-              <label for="nro-dcto-giro">N° Comprobante</label>
-              <input type="text" id="nro-dcto-giro" name="nro_dcto" required style="width: 100%;" readonly>
+              <input type="date" id="fecha-giro" name="fecha" required style="width: 100%;">
             </div>
             <div class="form-group">
               <label for="monto-giro">Monto</label>
@@ -315,6 +311,7 @@
               <select id="cuenta-giro" name="cuenta" required style="width: 100%;">
                 <option value="cuenta_corriente_1">Cuenta Corriente 1</option>
                 <option value="cuenta_corriente_2">Cuenta Corriente 2</option>
+                <!-- Agregar Cuenta de Ahorro -->
                 <option value="cuenta_ahorro">Cuenta de Ahorro</option>
               </select>
             </div>
@@ -322,7 +319,13 @@
               <label for="detalle-giro">Detalle</label>
               <input type="text" id="detalle-giro" name="detalle" placeholder="Detalle del giro" required style="width: 100%;">
             </div>
+            <!-- Asegurarse de que el campo de N° Comprobante esté presente -->
+            <div class="form-group">
+              <label for="nro-dcto-giro">N° Comprobante</label>
+              <input type="text" id="nro-dcto-giro" name="nro_dcto" required style="width: 100%;" readonly>
+            </div>
           </div>
+
           <div style="margin-top: 20px; text-align: center;">
             <button type="submit" class="submit-btn">
               <i class="bi bi-save"></i> Registrar Giro
@@ -338,11 +341,7 @@
           <div style="display: grid; grid-template-columns: 1fr; gap: 0px px;">
             <div class="form-group">
               <label for="fecha-deposito">Fecha</label>
-              <input type="date" id="fecha-deposito" name="fecha" required style="width: 100%;" readonly>
-            </div>
-            <div class="form-group">
-              <label for="nro-dcto-deposito">N° Comprobante</label>
-              <input type="text" id="nro-dcto-deposito" name="nro_dcto" required style="width: 100%;" readonly>
+              <input type="date" id="fecha-deposito" name="fecha" required style="width: 100%;">
             </div>
             <div class="form-group">
               <label for="monto-deposito">Monto</label>
@@ -353,12 +352,18 @@
               <select id="cuenta-deposito" name="cuenta" required style="width: 100%;">
                 <option value="cuenta_corriente_1">Cuenta Corriente 1</option>
                 <option value="cuenta_corriente_2">Cuenta Corriente 2</option>
+                <!-- Agregar Cuenta de Ahorro -->
                 <option value="cuenta_ahorro">Cuenta de Ahorro</option>
               </select>
             </div>
             <div class="form-group">
               <label for="detalle-deposito">Detalle</label>
               <input type="text" id="detalle-deposito" name="detalle" placeholder="Detalle del depósito" required style="width: 100%;">
+            </div>
+            <!-- Asegurarse de que el campo de N° Comprobante esté presente -->
+            <div class="form-group">
+              <label for="nro-dcto-deposito">N° Comprobante</label>
+              <input type="text" id="nro-dcto-deposito" name="nro_dcto" required style="width: 100%;" readonly>
             </div>
           </div>
 
@@ -962,13 +967,13 @@
     return `${hoy.getFullYear()}-${mes}-${dia}`;
   }
 
-  // Función para generar número de comprobante con prefijo
-  function generarNumeroComprobantePrefijo(tipo) {
+  // Función para generar número de comprobante con prefijo según tipo
+  function generarNumeroComprobante(tipo) {
     const numero = comprobanteCounter.toString().padStart(4, '0');
     comprobanteCounter++;
     localStorage.setItem('comprobanteCounter', comprobanteCounter);
-    if (tipo === 'ingreso') return `ING-${numero}`;
-    if (tipo === 'egreso') return `EGR-${numero}`;
+    if (tipo === 'ingreso') return 'ING-' + numero;
+    if (tipo === 'egreso') return 'EGR-' + numero;
     return numero;
   }
 
@@ -1008,127 +1013,54 @@
   // Función para configurar cuentas iniciales
   function configurarCuentasIniciales(e) {
     e.preventDefault();
+    
     if (!confirm('¿Está seguro(a) de guardar los cambios? Esta operación solo se podrá realizar una sola vez.')) {
       return;
     }
-
-    // Obtener valores del formulario y validar visualmente
-    const saldoCajaGeneral = parseFloat(document.getElementById('saldo-caja-general').value) || 0;
-    const saldoCtaCorriente1 = parseFloat(document.getElementById('saldo-cta-corriente-1').value) || 0;
-    const saldoCtaCorriente2 = parseFloat(document.getElementById('saldo-cta-corriente-2').value) || 0;
-    const saldoCuentaAhorro = parseFloat(document.getElementById('saldo-cuenta-ahorro').value) || 0;
-    const responsable = document.getElementById('responsable') ? document.getElementById('responsable').value.trim() : '';
-
-    // Validación visual de campos obligatorios
-    let valid = true;
-    const campos = [
-      { id: 'saldo-caja-general', value: saldoCajaGeneral },
-      { id: 'saldo-cta-corriente-1', value: saldoCtaCorriente1 },
-      { id: 'saldo-cta-corriente-2', value: saldoCtaCorriente2 },
-      { id: 'saldo-cuenta-ahorro', value: saldoCuentaAhorro },
-      { id: 'responsable', value: responsable }
-    ];
-    campos.forEach(campo => {
-      const input = document.getElementById(campo.id);
-      if (input) {
-        if (campo.value === '' || campo.value === null || (typeof campo.value === 'number' && isNaN(campo.value))) {
-          input.classList.add('is-invalid');
-          valid = false;
-        } else {
-          input.classList.remove('is-invalid');
-        }
-      }
-    });
-    if (!valid) {
-      mostrarNotificacion('Por favor complete todos los campos obligatorios', 'error');
-      return;
-    }
-
-    const data = {
-      saldo_caja_general: saldoCajaGeneral,
-      saldo_cta_corriente_1: saldoCtaCorriente1,
-      saldo_cta_corriente_2: saldoCtaCorriente2,
-      saldo_cuenta_ahorro: saldoCuentaAhorro,
-      responsable: responsable
+    
+    // Obtener valores del formulario
+    saldosCuentas.caja_general = parseFloat(document.getElementById('saldo-caja-general').value) || 0;
+    saldosCuentas.cuenta_corriente_1 = parseFloat(document.getElementById('saldo-cta-corriente-1').value) || 0;
+    saldosCuentas.cuenta_corriente_2 = parseFloat(document.getElementById('saldo-cta-corriente-2').value) || 0;
+    saldosCuentas.cuenta_ahorro = parseFloat(document.getElementById('saldo-cuenta-ahorro').value) || 0;
+    
+    // Guardar detalles de cuentas
+    accountDetails.caja_general = {
+      banco: document.getElementById('banco-caja-general').value,
+      numero: document.getElementById('numero-caja-general').value
     };
-
-    // Guardar en localStorage (mantener funcionalidad actual)
-    saldosCuentas.caja_general = data.saldo_caja_general;
-    saldosCuentas.cuenta_corriente_1 = data.saldo_cta_corriente_1;
-    saldosCuentas.cuenta_corriente_2 = data.saldo_cta_corriente_2;
-    saldosCuentas.cuenta_ahorro = data.saldo_cuenta_ahorro;
+    
+    accountDetails.cuenta_corriente_1 = {
+      banco: document.getElementById('banco-cta-corriente-1').value,
+      numero: document.getElementById('numero-cta-corriente-1').value
+    };
+    
+    accountDetails.cuenta_corriente_2 = {
+      banco: document.getElementById('banco-cta-corriente-2').value,
+      numero: document.getElementById('numero-cta-corriente-2').value
+    };
+    
+    accountDetails.cuenta_ahorro = {
+      banco: document.getElementById('banco-cuenta-ahorro').value,
+      numero: document.getElementById('numero-cuenta-ahorro').value
+    };
+    
+    // Guardar en localStorage
     localStorage.setItem('saldosCuentas', JSON.stringify(saldosCuentas));
+    guardarDetallesCuentas();
     localStorage.setItem('initialAccountsSet', 'true');
     initialAccountsSet = true;
-
+    
     // Bloquear formulario
     const inputs = document.querySelectorAll('#cuentasInicialesForm input, #cuentasInicialesForm select');
     inputs.forEach(input => {
       input.disabled = true;
     });
-
+    
     // Actualizar UI
     actualizarSaldosCuentas();
     mostrarNotificacion('Cuentas iniciales guardadas correctamente');
-
-    // Enviar datos al backend para registrar en la base de datos
-    fetch('/configuracion-cuentas-iniciales', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(async response => {
-      if (!response.ok) {
-        let errorMsg = 'Error de conexión con el servidor';
-        try {
-          const errorData = await response.json();
-          errorMsg = errorData.message || errorMsg;
-        } catch {}
-        throw new Error(errorMsg);
-      }
-      return response.json();
-    })
-    .then(result => {
-      if (result.success) {
-        mostrarNotificacion('Cuentas iniciales registradas en la base de datos');
-        // Si el backend retorna los saldos actualizados, reflejarlos en la UI
-        if (result.data) {
-          let mensaje = 'Saldos actualizados:';
-          if (typeof result.data.saldo_caja_general !== 'undefined') {
-            saldosCuentas.caja_general = result.data.saldo_caja_general;
-            localStorage.setItem('saldoCajaGeneral', result.data.saldo_caja_general);
-            mensaje += `\nCaja General: $${Number(result.data.saldo_caja_general).toLocaleString('es-CL')}`;
-          }
-          if (typeof result.data.saldo_cta_corriente_1 !== 'undefined') {
-            saldosCuentas.cuenta_corriente_1 = result.data.saldo_cta_corriente_1;
-            localStorage.setItem('saldoCuentaCorriente1', result.data.saldo_cta_corriente_1);
-            mensaje += `\nCuenta Corriente 1: $${Number(result.data.saldo_cta_corriente_1).toLocaleString('es-CL')}`;
-          }
-          if (typeof result.data.saldo_cta_corriente_2 !== 'undefined') {
-            saldosCuentas.cuenta_corriente_2 = result.data.saldo_cta_corriente_2;
-            localStorage.setItem('saldoCuentaCorriente2', result.data.saldo_cta_corriente_2);
-            mensaje += `\nCuenta Corriente 2: $${Number(result.data.saldo_cta_corriente_2).toLocaleString('es-CL')}`;
-          }
-          if (typeof result.data.saldo_cuenta_ahorro !== 'undefined') {
-            saldosCuentas.cuenta_ahorro = result.data.saldo_cuenta_ahorro;
-            localStorage.setItem('saldoCuentaAhorro', result.data.saldo_cuenta_ahorro);
-            mensaje += `\nCuenta de Ahorro: $${Number(result.data.saldo_cuenta_ahorro).toLocaleString('es-CL')}`;
-          }
-          actualizarSaldosCuentas();
-          actualizarTotales();
-          mostrarNotificacion(mensaje, 'success');
-        }
-      } else {
-        mostrarNotificacion(result.message || 'Error al guardar en base de datos', 'error');
-      }
-    })
-    .catch(error => {
-      mostrarNotificacion(error.message || 'Error de conexión con el servidor', 'error');
-    });
-
+    
     // Cerrar modal después de 2 segundos
     setTimeout(() => {
       document.getElementById('cuentasInicialesModal').classList.remove('show');
@@ -1245,205 +1177,737 @@
     document.getElementById('egresosForm').reset();
   }
 
-  // Función para enviar giro al backend
-  function enviarGiroBackend(movimientoEgreso, movimientoIngreso) {
-    fetch('/movimiento-giros-depositos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      },
-      body: JSON.stringify({
-        tipo: 'giro',
-        comprobante: movimientoEgreso.nro_dcto,
-        fecha: movimientoEgreso.fecha,
-        monto: movimientoEgreso.monto,
-        cuenta_origen: movimientoEgreso.cuenta_origen,
-        cuenta_destino: movimientoIngreso.cuenta_destino,
-        detalle: movimientoEgreso.descripcion
-      })
-    })
-    .then(async response => {
-      if (!response.ok) {
-        let errorMsg = 'Error de conexión con el servidor';
-        try {
-          const errorData = await response.json();
-          errorMsg = errorData.message || errorMsg;
-        } catch {}
-        throw new Error(errorMsg);
-      }
-      return response.json();
-    })
-    .then(result => {
-      if (result.success) {
-        mostrarNotificacion('Giro registrado en la base de datos', 'success');
-      } else {
-        mostrarNotificacion(result.message || 'Error al guardar giro en base de datos', 'error');
-      }
-    })
-    .catch(error => {
-      mostrarNotificacion(error.message || 'Error de conexión con el servidor', 'error');
-    });
-  }
-  // Función para enviar depósito al backend
-  function enviarDepositoBackend(movimientoEgreso, movimientoIngreso) {
-    fetch('/movimiento-giros-depositos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      },
-      body: JSON.stringify({
-        tipo: 'deposito',
-        comprobante: movimientoEgreso.nro_dcto,
-        fecha: movimientoEgreso.fecha,
-        monto: movimientoEgreso.monto,
-        cuenta_origen: movimientoEgreso.cuenta_origen,
-        cuenta_destino: movimientoIngreso.cuenta_destino,
-        detalle: movimientoEgreso.descripcion
-      })
-    })
-    .then(async response => {
-      if (!response.ok) {
-        let errorMsg = 'Error de conexión con el servidor';
-        try {
-          const errorData = await response.json();
-          errorMsg = errorData.message || errorMsg;
-        } catch {}
-        throw new Error(errorMsg);
-      }
-      return response.json();
-    })
-    .then(result => {
-      if (result.success) {
-        mostrarNotificacion('Depósito registrado en la base de datos', 'success');
-      } else {
-        mostrarNotificacion(result.message || 'Error al guardar depósito en base de datos', 'error');
-      }
-    })
-    .catch(error => {
-      mostrarNotificacion(error.message || 'Error de conexión con el servidor', 'error');
-    });
-  }
-  // Modificar registrarGiro y registrarDeposito para enviar al backend
+  // Función para registrar un giro (transferencia entre cuentas)
   function registrarGiro(e) {
     e.preventDefault();
+    
     const fecha = document.getElementById('fecha-giro').value;
-    const nro_dcto = document.getElementById('nro-dcto-giro').value;
     const monto = parseFloat(document.getElementById('monto-giro').value);
     const cuenta_origen = document.getElementById('cuenta-giro').value;
     const detalle = document.getElementById('detalle-giro').value;
+    
     // Validar monto positivo
     if (monto <= 0) {
       mostrarNotificacion('El monto debe ser mayor a cero', 'error');
       return;
     }
+    
     // Validar saldo suficiente
     if (saldosCuentas[cuenta_origen] < monto) {
       mostrarNotificacion('Saldo insuficiente en la cuenta seleccionada', 'error');
       return;
     }
+    
     // Crear movimientos (uno de egreso y uno de ingreso)
     const id = Date.now();
     const timestamp = new Date().getTime();
+    
     // Movimiento de egreso (desde cuenta origen)
     const movimientoEgreso = {
       id: id,
       fecha,
       tipo: 'transferencia',
       subtipo: 'giro',
-      nro_dcto: nro_dcto,
+      nro_dcto: `G-${generarNumeroComprobante()}`,
       categoria: 'transferencia',
       cuenta_origen,
       descripcion: `Giro a Caja General: ${detalle}`,
       monto,
       timestamp
     };
+    
     // Movimiento de ingreso (a caja general)
     const movimientoIngreso = {
       id: id + 1,
       fecha,
       tipo: 'transferencia',
       subtipo: 'giro',
-      nro_dcto: nro_dcto,
+      nro_dcto: `G-${generarNumeroComprobante()}`,
       categoria: 'transferencia',
       cuenta_destino: 'caja_general',
       descripcion: `Giro desde ${cuentas[cuenta_origen]}: ${detalle}`,
       monto,
       timestamp: timestamp + 1
     };
+    
+    // Agregar a la lista de movimientos
     movimientos.push(movimientoEgreso, movimientoIngreso);
     localStorage.setItem('movimientos', JSON.stringify(movimientos));
+    
+    // Actualizar saldos
     saldosCuentas[cuenta_origen] -= monto;
     saldosCuentas.caja_general += monto;
     actualizarSaldosCuentas();
+    
+    // Actualizar UI
     actualizarTotales();
     actualizarTablaMovimientos();
+    
+    // Actualizar libro de caja tabular si está disponible
     if (window.actualizarTablaLibroCaja) window.actualizarTablaLibroCaja();
+    // Mostrar notificación y limpiar formulario
     mostrarNotificacion('Giro registrado correctamente');
     document.getElementById('girosForm').reset();
-    // Enviar al backend
-    enviarGiroBackend(movimientoEgreso, movimientoIngreso);
-}
-function registrarDeposito(e) {
+  }
+
+  // Función para registrar un depósito (transferencia entre cuentas)
+  function registrarDeposito(e) {
     e.preventDefault();
+    
     const fecha = document.getElementById('fecha-deposito').value;
-    const nro_dcto = document.getElementById('nro-dcto-deposito').value;
     const monto = parseFloat(document.getElementById('monto-deposito').value);
     const cuenta_destino = document.getElementById('cuenta-deposito').value;
     const detalle = document.getElementById('detalle-deposito').value;
+    
     // Validar monto positivo
     if (monto <= 0) {
       mostrarNotificacion('El monto debe ser mayor a cero', 'error');
       return;
     }
+    
     // Validar saldo suficiente en caja general
     if (saldosCuentas.caja_general < monto) {
       mostrarNotificacion('Saldo insuficiente en Caja General', 'error');
       return;
     }
+    
     // Crear movimientos (uno de egreso y uno de ingreso)
     const id = Date.now();
     const timestamp = new Date().getTime();
+    
     // Movimiento de egreso (desde caja general)
     const movimientoEgreso = {
       id: id,
       fecha,
       tipo: 'transferencia',
       subtipo: 'deposito',
-      nro_dcto: nro_dcto,
+      nro_dcto: `D-${generarNumeroComprobante()}`,
       categoria: 'transferencia',
       cuenta_origen: 'caja_general',
       descripcion: `Depósito a ${cuentas[cuenta_destino]}: ${detalle}`,
       monto,
       timestamp
     };
+    
     // Movimiento de ingreso (a cuenta destino)
     const movimientoIngreso = {
       id: id + 1,
       fecha,
       tipo: 'transferencia',
       subtipo: 'deposito',
-      nro_dcto: nro_dcto,
+      nro_dcto: `D-${generarNumeroComprobante()}`,
       categoria: 'transferencia',
       cuenta_destino,
       descripcion: `Depósito desde Caja General: ${detalle}`,
       monto,
       timestamp: timestamp + 1
     };
+    
+    // Agregar a la lista de movimientos
     movimientos.push(movimientoEgreso, movimientoIngreso);
     localStorage.setItem('movimientos', JSON.stringify(movimientos));
+    
+    // Actualizar saldos
     saldosCuentas.caja_general -= monto;
     saldosCuentas[cuenta_destino] += monto;
     actualizarSaldosCuentas();
+    
+    // Actualizar UI
     actualizarTotales();
     actualizarTablaMovimientos();
+    
+    // Actualizar libro de caja tabular si está disponible
     if (window.actualizarTablaLibroCaja) window.actualizarTablaLibroCaja();
+    // Mostrar notificación y limpiar formulario
     mostrarNotificacion('Depósito registrado correctamente');
     document.getElementById('depositosForm').reset();
-    // Enviar al backend
-    enviarDepositoBackend(movimientoEgreso, movimientoIngreso);
-}
+  }
+
+  // Función para actualizar los totales
+  function actualizarTotales() {
+
+    const totalIngresos = movimientos
+      .filter(m => m.tipo === 'ingreso')
+      .reduce((total, m) => total + (Number(m.monto) || 0), 0);
+
+    const totalEgresos = movimientos
+      .filter(m => m.tipo === 'egreso')
+      .reduce((total, m) => total + (Number(m.monto) || 0), 0);
+
+    const saldoFinal = totalIngresos - totalEgresos;
+
+    document.getElementById('balanceTotalIngresos').textContent = formatearMoneda(totalIngresos);
+    document.getElementById('balanceTotalEgresos').textContent = formatearMoneda(totalEgresos);
+    document.getElementById('balanceSaldoFinal').textContent = formatearMoneda(saldoFinal);
+
+    actualizarInformeRubro();
+  }
+
+  // Función para actualizar informe por rubro
+  function actualizarInformeRubro() {
+    // Calcular gastos operativos (mantención, materiales, trabajos domicilio)
+
+    const gastoOperativo = movimientos
+      .filter(m => m.tipo === 'egreso' && 
+        (m.categoria === 'mantencion' || m.categoria === 'trabajos_domicilio' || m.categoria === 'materiales_red'))
+      .reduce((total, m) => total + (Number(m.monto) || 0), 0);
+
+    // Calcular gastos administrativos (sueldos, administración, energía, etc.)
+
+    const gastoAdministrativo = movimientos
+      .filter(m => m.tipo === 'egreso' &&
+        (m.categoria === 'sueldos' || m.categoria === 'insumos_oficina' || m.categoria === 'energia_electrica' ||
+         m.categoria === 'otras_cuentas' || m.categoria === 'viaticos'))
+      .reduce((total, m) => total + (Number(m.monto) || 0), 0);
+
+    // Calcular gasto en mantención
+
+    const gastoMantencion = movimientos
+      .filter(m => m.tipo === 'egreso' && (m.categoria === 'mantencion' || m.categoria === 'trabajos_domicilio'))
+      .reduce((total, m) => total + (Number(m.monto) || 0), 0);
+
+    // Calcular recaudado por multas (asumiendo que las multas son ingresos con categoría específica)
+
+    const recaudoMultas = movimientos
+      .filter(m => m.tipo === 'ingreso' && (m.categoria === 'multas_inasistencia' || m.categoria === 'otras_multas'))
+      .reduce((total, m) => total + (Number(m.monto) || 0), 0);
+
+    // Actualizar la interfaz
+    document.getElementById('gastoOperativo').textContent = formatearMoneda(gastoOperativo);
+    document.getElementById('gastoAdministrativo').textContent = formatearMoneda(gastoAdministrativo);
+    document.getElementById('gastoMantencion').textContent = formatearMoneda(gastoMantencion);
+    document.getElementById('recaudoMultas').textContent = formatearMoneda(recaudoMultas);
+
+    // Actualizar barras de progreso
+    const totalOperAdmin = gastoOperativo + gastoAdministrativo;
+    const porcentajeOperativo = totalOperAdmin > 0 ? (gastoOperativo / totalOperAdmin) * 100 : 50;
+    const porcentajeMantencionMultas = (gastoMantencion + recaudoMultas) > 0 ?
+      (gastoMantencion / (gastoMantencion + recaudoMultas)) * 100 : 50;
+
+    document.querySelectorAll('.rubro-bar-fill')[0].style.width = `${porcentajeOperativo}%`;
+    document.querySelectorAll('.rubro-bar-fill')[1].style.width = `${porcentajeMantencionMultas}%`;
+
+    // Actualizar valores en los títulos
+    document.querySelectorAll('.rubro-value')[0].textContent =
+      `${formatearMoneda(gastoOperativo)} / ${formatearMoneda(gastoAdministrativo)}`;
+    document.querySelectorAll('.rubro-value')[1].textContent =
+      `${formatearMoneda(gastoMantencion)} / ${formatearMoneda(recaudoMultas)}`;
+  }
+
+  // Función para actualizar la tabla de movimientos
+  function actualizarTablaMovimientos() {
+    const tabla = document.getElementById('tablaTodosMovimientos');
+    tabla.innerHTML = '';
+    
+    // Obtener filtros
+    const tipo = document.getElementById('filtroTipo').value;
+    const categoria = document.getElementById('filtroCategoria').value;
+    const cuenta = document.getElementById('filtroCuenta').value;
+    const fechaDesde = document.getElementById('filtroFechaDesde').value;
+    const fechaHasta = document.getElementById('filtroFechaHasta').value;
+    
+    // Filtrar movimientos
+    let movimientosFiltrados = movimientos;
+    
+    if (tipo) {
+      movimientosFiltrados = movimientosFiltrados.filter(m => m.tipo === tipo);
+    }
+    
+    if (categoria) {
+      movimientosFiltrados = movimientosFiltrados.filter(m => {
+        const catNombre = m.tipo === 'ingreso' ? categoriasIngresos[m.categoria] : categoriasEgresos[m.categoria];
+        return catNombre === categoria;
+      });
+    }
+    
+    if (cuenta) {
+      movimientosFiltrados = movimientosFiltrados.filter(m => 
+        (m.cuenta_origen === cuenta) || (m.cuenta_destino === cuenta)
+      );
+    }
+    
+    if (fechaDesde) {
+      movimientosFiltrados = movimientosFiltrados.filter(m => m.fecha >= fechaDesde);
+    }
+    
+    if (fechaHasta) {
+      movimientosFiltrados = movimientosFiltrados.filter(m => m.fecha <= fechaHasta);
+    }
+    
+    // Ordenar por fecha (más reciente primero)
+    movimientosFiltrados.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    
+    // Mostrar en la tabla
+    movimientosFiltrados.forEach(movimiento => {
+      const fila = document.createElement('tr');
+      
+      // Determinar tipo y categoría
+      let tipoMovimiento = '';
+      let categoriaMovimiento = '';
+      let cuentaMovimiento = '';
+      
+      if (movimiento.tipo === 'transferencia') {
+        tipoMovimiento = 'Transferencia';
+        categoriaMovimiento = movimiento.subtipo === 'giro' ? 'Giro' : 'Depósito';
+        cuentaMovimiento = movimiento.subtipo === 'giro' ? 
+          `De ${cuentas[movimiento.cuenta_origen]} a Caja General` : 
+          `De Caja General a ${cuentas[movimiento.cuenta_destino]}`;
+      } else {
+        tipoMovimiento = movimiento.tipo === 'ingreso' ? 'Ingreso' : 'Egreso';
+        categoriaMovimiento = movimiento.tipo === 'ingreso' ? 
+          categoriasIngresos[movimiento.categoria] : 
+          categoriasEgresos[movimiento.categoria];
+        cuentaMovimiento = movimiento.tipo === 'ingreso' ? 
+          cuentas[movimiento.cuenta_destino] : 
+          cuentas[movimiento.cuenta_origen];
+      }
+      
+      // Crear fila
+      fila.innerHTML = `
+        <td>${movimiento.fecha}</td>
+        <td>${tipoMovimiento}</td>
+        <td>${categoriaMovimiento}</td>
+        <td>${movimiento.descripcion}</td>
+        <td>${cuentaMovimiento}</td>
+        <td>${formatearMoneda(movimiento.monto)}</td>
+        <td>${movimiento.nro_dcto}</td>
+        <td>${movimiento.razon_social || '-'}</td>
+        <td>${movimiento.rut_proveedor || '-'}</td>
+      `;
+      
+      tabla.appendChild(fila);
+    });
+  }
+
+  // Función para filtrar movimientos
+  function filtrarMovimientos() {
+    actualizarTablaMovimientos();
+  }
+
+  // Función para exportar a Excel
+  function exportarExcel() {
+    // Crear libro de Excel
+    const wb = XLSX.utils.book_new();
+    
+    // Preparar datos
+    const datos = [];
+    
+    // Encabezados
+    datos.push([
+      'Fecha', 'Tipo', 'Categoría', 'Descripción', 'Cuenta', 
+      'Monto', 'N° Comprobante', 'Proveedor', 'RUT Proveedor'
+    ]);
+    
+    // Agregar movimientos
+    movimientos.forEach(movimiento => {
+      // Determinar tipo y categoría
+      let tipoMovimiento = '';
+      let categoriaMovimiento = '';
+      let cuentaMovimiento = '';
+      
+      if (movimiento.tipo === 'transferencia') {
+        tipoMovimiento = 'Transferencia';
+        categoriaMovimiento = movimiento.subtipo === 'giro' ? 'Giro' : 'Depósito';
+        cuentaMovimiento = movimiento.subtipo === 'giro' ? 
+          `De ${cuentas[movimiento.cuenta_origen]} a Caja General` : 
+          `De Caja General a ${cuentas[movimiento.cuenta_destino]}`;
+      } else {
+        tipoMovimiento = movimiento.tipo === 'ingreso' ? 'Ingreso' : 'Egreso';
+        categoriaMovimiento = movimiento.tipo === 'ingreso' ? 
+          categoriasIngresos[movimiento.categoria] : 
+          categoriasEgresos[movimiento.categoria];
+        cuentaMovimiento = movimiento.tipo === 'ingreso' ? 
+          cuentas[movimiento.cuenta_destino] : 
+          cuentas[movimiento.cuenta_origen];
+      }
+      
+      datos.push([
+        movimiento.fecha,
+        tipoMovimiento,
+        categoriaMovimiento,
+        movimiento.descripcion,
+        cuentaMovimiento,
+        movimiento.monto,
+        movimiento.nro_dcto,
+        movimiento.razon_social || '-',
+        movimiento.rut_proveedor || '-'
+      ]);
+    });
+    
+    // Crear hoja de cálculo
+    const ws = XLSX.utils.aoa_to_sheet(datos);
+    
+    // Agregar hoja al libro
+    XLSX.utils.book_append_sheet(wb, ws, 'Movimientos');
+    
+    // Exportar
+    XLSX.writeFile(wb, 'movimientos_financieros.xlsx');
+  }
+
+  // Función para inicializar gráficos
+  function inicializarGraficos() {
+    // Destruir gráficos existentes si los hay
+    if (chartIngresos) chartIngresos.destroy();
+    if (chartEgresos) chartEgresos.destroy();
+    if (chartFlujo) chartFlujo.destroy();
+    if (chartConciliacion) chartConciliacion.destroy();
+    
+    // Gráfico de distribución de ingresos
+    const ingresosPorCategoria = {};
+    movimientos
+      .filter(m => m.tipo === 'ingreso')
+      .forEach(m => {
+        const categoria = categoriasIngresos[m.categoria] || 'Otros';
+        ingresosPorCategoria[categoria] = (ingresosPorCategoria[categoria] || 0) + m.monto;
+      });
+    
+    const ctxIngresos = document.getElementById('ingresosChart').getContext('2d');
+    chartIngresos = new Chart(ctxIngresos, {
+      type: 'pie',
+      data: {
+        labels: Object.keys(ingresosPorCategoria),
+        datasets: [{
+          data: Object.values(ingresosPorCategoria),
+          backgroundColor: [
+            '#4CAF50', '#8BC34A', '#CDDC39', '#FFC107', 
+            '#FF9800', '#FF5722', '#9C27B0', '#3F51B5'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'right',
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.raw || 0;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = Math.round((value / total) * 100);
+                return `${label}: ${formatearMoneda(value)} (${percentage}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    // Gráfico de distribución de egresos
+    const egresosPorCategoria = {};
+    movimientos
+      .filter(m => m.tipo === 'egreso')
+      .forEach(m => {
+        const categoria = categoriasEgresos[m.categoria] || 'Otros';
+        egresosPorCategoria[categoria] = (egresosPorCategoria[categoria] || 0) + m.monto;
+      });
+    
+    const ctxEgresos = document.getElementById('egresosChart').getContext('2d');
+    chartEgresos = new Chart(ctxEgresos, {
+      type: 'pie',
+      data: {
+        labels: Object.keys(egresosPorCategoria),
+        datasets: [{
+          data: Object.values(egresosPorCategoria),
+          backgroundColor: [
+            '#F44336', '#E91E63', '#9C27B0', '#673AB7', 
+            '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'right',
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.raw || 0;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = Math.round((value / total) * 100);
+                return `${label}: ${formatearMoneda(value)} (${percentage}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    // Gráfico de flujo mensual
+    const flujoMensual = {};
+    movimientos.forEach(m => {
+      const fecha = new Date(m.fecha);
+      const mesAnio = `${fecha.getFullYear()}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}`;
+      
+      if (!flujoMensual[mesAnio]) {
+        flujoMensual[mesAnio] = { ingresos: 0, egresos: 0 };
+      }
+      
+      if (m.tipo === 'ingreso') {
+        flujoMensual[mesAnio].ingresos += m.monto;
+      } else if (m.tipo === 'egreso') {
+        flujoMensual[mesAnio].egresos += m.monto;
+      }
+    });
+    
+    const meses = Object.keys(flujoMensual).sort();
+    const ingresosMensuales = meses.map(mes => flujoMensual[mes].ingresos);
+    const egresosMensuales = meses.map(mes => flujoMensual[mes].egresos);
+    
+    const ctxFlujo = document.getElementById('flujoChart').getContext('2d');
+    chartFlujo = new Chart(ctxFlujo, {
+      type: 'bar',
+      data: {
+        labels: meses,
+        datasets: [
+          {
+            label: 'Ingresos',
+            data: ingresosMensuales,
+            backgroundColor: '#4CAF50'
+          },
+          {
+            label: 'Egresos',
+            data: egresosMensuales,
+            backgroundColor: '#F44336'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            stacked: false,
+          },
+          y: {
+            stacked: false,
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.dataset.label || '';
+                const value = context.raw || 0;
+                return `${label}: ${formatearMoneda(value)}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Función para volver a la vista de registro principal
+  function volverARegistro() {
+    // Ocultar todas las secciones visibles
+    const sections = [
+      'girosDepositosSection',
+      'balanceSection',
+      'conciliacionSection',
+      'informeRubroSection',
+      'movimientosSection'
+    ];
+    
+    sections.forEach(id => {
+      const section = document.getElementById(id);
+      if (section) section.style.display = 'none';
+    });
+    
+    // Mostrar sección principal
+    document.getElementById('registroSection').style.display = 'block';
+  }
+
+  // Inicialización al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    // Manejar TODOS los botones "volver"
+    document.querySelectorAll('button.volver').forEach(function(btn) {
+      btn.addEventListener('click', volverARegistro);
+    });
+
+    // Configurar evento para formulario de cuentas iniciales
+    document.getElementById('cuentasInicialesForm').addEventListener('submit', configurarCuentasIniciales);
+    
+    // Botón para abrir modal de cuentas iniciales
+    document.getElementById('cuentasInicialesBtn').addEventListener('click', () => {
+      document.getElementById('cuentasInicialesModal').classList.add('show');
+    });
+    
+    // Cerrar modal de cuentas iniciales
+    document.getElementById('closeCuentasInicialesModal').addEventListener('click', () => {
+      document.getElementById('cuentasInicialesModal').classList.remove('show');
+    });
+    
+    // Configurar eventos para botones principales
+    document.getElementById('ingresosBtn').addEventListener('click', () => {
+      document.getElementById('ingresosModal').classList.add('show');
+      const nroDctoInput = document.getElementById('nro-dcto-ingresos');
+      if (nroDctoInput) {
+        nroDctoInput.value = generarNumeroComprobante('ingreso');
+        nroDctoInput.readOnly = true;
+      }
+      const fechaInput = document.getElementById('fecha-ingresos');
+      if (fechaInput) {
+        fechaInput.value = obtenerFechaActual();
+        fechaInput.readOnly = true;
+      }
+    });
+    document.getElementById('egresosBtn').addEventListener('click', () => {
+      document.getElementById('egresosModal').classList.add('show');
+      const nroDctoInput = document.getElementById('nro-dcto-egresos');
+      if (nroDctoInput) {
+        nroDctoInput.value = generarNumeroComprobante('egreso');
+        nroDctoInput.readOnly = true;
+      }
+      const fechaInput = document.getElementById('fecha-egresos');
+      if (fechaInput) {
+        fechaInput.value = obtenerFechaActual();
+        fechaInput.readOnly = true;
+      }
+    });
+
+    document.getElementById('giroDepositosBtn').addEventListener('click', () => {
+      document.getElementById('girosDepositosSection').style.display = 'block';
+      document.getElementById('registroSection').style.display = 'none';
+      // Establecer fecha actual y no editable en ambos formularios
+      const fechaGiro = document.getElementById('fecha-giro');
+      if (fechaGiro) {
+        fechaGiro.value = obtenerFechaActual();
+        fechaGiro.readOnly = true;
+      }
+      const fechaDeposito = document.getElementById('fecha-deposito');
+      if (fechaDeposito) {
+        fechaDeposito.value = obtenerFechaActual();
+        fechaDeposito.readOnly = true;
+      }
+      // Comprobante Giro
+      const nroDctoGiro = document.getElementById('nro-dcto-giro');
+      if (nroDctoGiro) {
+        nroDctoGiro.value = 'G-' + comprobanteCounter.toString().padStart(4, '0');
+        nroDctoGiro.readOnly = true;
+        comprobanteCounter++;
+        localStorage.setItem('comprobanteCounter', comprobanteCounter);
+      }
+      // Comprobante Depósito
+      const nroDctoDeposito = document.getElementById('nro-dcto-deposito');
+      if (nroDctoDeposito) {
+        nroDctoDeposito.value = 'D-' + comprobanteCounter.toString().padStart(4, '0');
+        nroDctoDeposito.readOnly = true;
+        comprobanteCounter++;
+        localStorage.setItem('comprobanteCounter', comprobanteCounter);
+      }
+    });
+
+    document.getElementById('libroCajaBtn').addEventListener('click', () => {
+      document.getElementById('registroSection').style.display = 'none';
+      document.getElementById('libroCajaSection').style.display = 'block';
+
+      // Configurar fechas por defecto (primer y último día del mes actual) y no editables
+      const hoy = new Date();
+      const primerDiaMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+      const ultimoDiaMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+
+      const fechaDesde = document.getElementById('fechaDesde');
+      const fechaHasta = document.getElementById('fechaHasta');
+      if (fechaDesde) {
+        fechaDesde.valueAsDate = primerDiaMes;
+        fechaDesde.readOnly = true;
+      }
+      if (fechaHasta) {
+        fechaHasta.valueAsDate = ultimoDiaMes;
+        fechaHasta.readOnly = true;
+      }
+    });
+
+    document.getElementById('balanceBtn').addEventListener('click', () => {
+      document.getElementById('registroSection').style.display = 'none';
+      document.getElementById('balanceSection').style.display = 'block';
+      inicializarGraficos();
+    });
+
+    document.getElementById('conciliacionBtn').addEventListener('click', () => {
+      document.getElementById('registroSection').style.display = 'none';
+      document.getElementById('conciliacionSection').style.display = 'block';
+    });
+
+    document.getElementById('informeRubroBtn').addEventListener('click', () => {
+      document.getElementById('registroSection').style.display = 'none';
+      document.getElementById('informeRubroSection').style.display = 'block';
+    });
+
+    document.getElementById('movimientosBtn').addEventListener('click', () => {
+      document.getElementById('registroSection').style.display = 'none';
+      document.getElementById('movimientosSection').style.display = 'block';
+
+      // Llenar el select de categorías
+      const selectCategoria = document.getElementById('filtroCategoria');
+      selectCategoria.innerHTML = '<option value="">Todas</option>';
+
+      // Agregar categorías de ingresos
+      Object.values(categoriasIngresos).forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        selectCategoria.appendChild(option);
+      });
+
+      // Agregar categorías de egresos
+      Object.values(categoriasEgresos).forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        selectCategoria.appendChild(option);
+      });
+
+      // Configurar fechas por defecto (primer y último día del mes actual) y no editables
+      const hoy = new Date();
+      const primerDiaMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+      const ultimoDiaMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+
+      const filtroFechaDesde = document.getElementById('filtroFechaDesde');
+      const filtroFechaHasta = document.getElementById('filtroFechaHasta');
+      if (filtroFechaDesde) {
+        filtroFechaDesde.valueAsDate = primerDiaMes;
+        filtroFechaDesde.readOnly = true;
+      }
+      if (filtroFechaHasta) {
+        filtroFechaHasta.valueAsDate = ultimoDiaMes;
+        filtroFechaHasta.readOnly = true;
+      }
+
+      // Actualizar tabla de movimientos
+      actualizarTablaMovimientos();
+    });
+
+    // Event listeners para cierre de modales
+    document.getElementById('closeIngresosModal').addEventListener('click', () => {
+      document.getElementById('ingresosModal').classList.remove('show');
+      movimientoEditando = null;
+      document.getElementById('ingresosForm').reset();
+    });
+
+    document.getElementById('closeEgresosModal').addEventListener('click', () => {
+      document.getElementById('egresosModal').classList.remove('show');
+      document.getElementById('egresosForm').reset();
+    });
+
+    // Event listeners para formularios
+    document.getElementById('ingresosForm').addEventListener('submit', registrarIngreso);
+    document.getElementById('egresosForm').addEventListener('submit', registrarEgreso);
+    document.getElementById('girosForm').addEventListener('submit', registrarGiro);
+    document.getElementById('depositosForm').addEventListener('submit', registrarDeposito);
+
+
+    // Cargar datos iniciales
+    actualizarSaldosCuentas();
+    actualizarTotales();
+    actualizarTablaMovimientos();
+  });
 </script>
 @php
     $isCrc = Auth::user()->isCrc();
@@ -1514,88 +1978,6 @@ function registrarDeposito(e) {
             document.getElementById('fechaHasta').valueAsDate = ultimoDiaMes;
         }
     });
-
-    document.addEventListener('DOMContentLoaded', function() {
-  // Manejar TODOS los botones "volver"
-  document.querySelectorAll('button.volver').forEach(function(btn) {
-    btn.addEventListener('click', volverARegistro);
-  });
-
-  // Configurar evento para formulario de cuentas iniciales
-  document.getElementById('cuentasInicialesForm').addEventListener('submit', configurarCuentasIniciales);
-
-  // Botón para abrir modal de cuentas iniciales
-  document.getElementById('cuentasInicialesBtn').addEventListener('click', () => {
-    document.getElementById('cuentasInicialesModal').classList.add('show');
-  });
-
-  // Cerrar modal de cuentas iniciales
-  document.getElementById('closeCuentasInicialesModal').addEventListener('click', () => {
-    document.getElementById('cuentasInicialesModal').classList.remove('show');
-  });
-
-  // Configurar eventos para botones principales
-  document.getElementById('ingresosBtn').addEventListener('click', () => {
-    document.getElementById('ingresosModal').classList.add('show');
-    document.getElementById('nro-dcto-ingresos').value = generarNumeroComprobantePrefijo('ingreso');
-    document.getElementById('nro-dcto-ingresos').readOnly = true;
-    document.getElementById('fecha-ingresos').value = obtenerFechaActual();
-    document.getElementById('fecha-ingresos').readOnly = true;
-  });
-
-  document.getElementById('egresosBtn').addEventListener('click', () => {
-    document.getElementById('egresosModal').classList.add('show');
-    document.getElementById('nro-dcto-egresos').value = generarNumeroComprobantePrefijo('egreso');
-    document.getElementById('nro-dcto-egresos').readOnly = true;
-    document.getElementById('fecha-egresos').value = obtenerFechaActual();
-    document.getElementById('fecha-egresos').readOnly = true;
-  });
-
-  document.getElementById('giroDepositosBtn').addEventListener('click', () => {
-    document.getElementById('girosDepositosSection').style.display = 'block';
-    document.getElementById('registroSection').style.display = 'none';
-    // Establecer fecha actual y comprobante en ambos formularios
-    if (document.getElementById('fecha-giro')) {
-      document.getElementById('fecha-giro').value = obtenerFechaActual();
-      document.getElementById('fecha-giro').readOnly = true;
-    }
-    if (document.getElementById('nro-dcto-giro')) {
-      document.getElementById('nro-dcto-giro').value = `G-${generarNumeroComprobante()}`;
-      document.getElementById('nro-dcto-giro').readOnly = true;
-    }
-    if (document.getElementById('fecha-deposito')) {
-      document.getElementById('fecha-deposito').value = obtenerFechaActual();
-      document.getElementById('fecha-deposito').readOnly = true;
-    }
-    if (document.getElementById('nro-dcto-deposito')) {
-      document.getElementById('nro-dcto-deposito').value = `D-${generarNumeroComprobante()}`;
-      document.getElementById('nro-dcto-deposito').readOnly = true;
-    }
-  });
-
-  // Event listeners para cierre de modales
-  document.getElementById('closeIngresosModal').addEventListener('click', () => {
-    document.getElementById('ingresosModal').classList.remove('show');
-    movimientoEditando = null;
-    document.getElementById('ingresosForm').reset();
-  });
-
-  document.getElementById('closeEgresosModal').addEventListener('click', () => {
-    document.getElementById('egresosModal').classList.remove('show');
-    document.getElementById('egresosForm').reset();
-  });
-
-  // Event listeners para formularios
-  document.getElementById('ingresosForm').addEventListener('submit', registrarIngreso);
-  document.getElementById('egresosForm').addEventListener('submit', registrarEgreso);
-  document.getElementById('girosForm').addEventListener('submit', registrarGiro);
-  document.getElementById('depositosForm').addEventListener('submit', registrarDeposito);
-
-  // Cargar datos iniciales
-  actualizarSaldosCuentas();
-  actualizarTotales();
-  actualizarTablaMovimientos();
-});
 </script>
 @endif
 
