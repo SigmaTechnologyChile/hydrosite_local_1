@@ -122,34 +122,34 @@
         <h1>Registro de Ingresos y Egresos</h1>
 
         <div class="btn-wrapper">
-          <button id="ingresosBtn">
+          <x-boton-protegido id="ingresosBtn" :habilitado="true">
             <i class="bi bi-cash-coin"></i>Registro de Ingresos
-          </button>
-          <button id="egresosBtn">
+          </x-boton-protegido>
+          <x-boton-protegido id="egresosBtn" :habilitado="true">
             <i class="bi bi-credit-card"></i>Registro de Egresos
-          </button>
-          <button id="giroDepositosBtn">
+          </x-boton-protegido>
+          <x-boton-protegido id="giroDepositosBtn" :habilitado="true">
             <i class="bi bi-arrow-left-right"></i>Giros y Depósitos
-          </button>
-          <button id="libroCajaBtn">
+          </x-boton-protegido>
+          <x-boton-protegido id="libroCajaBtn" :habilitado="true">
             <i class="bi bi-journal-bookmark"></i>Libro de Caja Tabular
-          </button>
-          <button id="balanceBtn">
+          </x-boton-protegido>
+          <x-boton-protegido id="balanceBtn" :habilitado="true">
             <i class="bi bi-bar-chart"></i>Balance
-          </button>
-          <button id="conciliacionBtn">
+          </x-boton-protegido>
+          <x-boton-protegido id="conciliacionBtn" :habilitado="true">
             <i class="bi bi-bank"></i>Conciliación Bancaria
-          </button>
-          <button id="informeRubroBtn">
+          </x-boton-protegido>
+          <x-boton-protegido id="informeRubroBtn" :habilitado="true">
             <i class="bi bi-pie-chart"></i>Informe por Rubro
-          </button>
-          <button id="movimientosBtn">
+          </x-boton-protegido>
+          <x-boton-protegido id="movimientosBtn" :habilitado="true">
             <i class="bi bi-list-check"></i>Movimientos
-          </button>
+          </x-boton-protegido>
           <!-- Nuevo botón Cuentas Iniciales -->
-          <button id="cuentasInicialesBtn" style="background-color: #d32f2f; color: #fff; border: none;">
+          <x-boton-protegido id="cuentasInicialesBtn" style="background-color: #d32f2f; color: #fff; border: none;" :habilitado="true">
             <i class="bi bi-journal-plus"></i>Cuentas Iniciales
-          </button>
+          </x-boton-protegido>
         </div>
       </div>
     </div>
