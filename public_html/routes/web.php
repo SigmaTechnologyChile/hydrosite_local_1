@@ -5,6 +5,9 @@ Route::get('orgs/contable/{id}/exportar-excel', [App\Http\Controllers\Org\Contab
 Route::resource('configuracion-inicial', App\Http\Controllers\ConfiguracionInicialController::class)->only([
     'index', 'store', 'edit', 'update'
 ]);
+
+// Endpoint para guardar configuración de cuentas iniciales desde el modal (AJAX)
+Route::post('/configuracion-cuentas-iniciales', [App\Http\Controllers\ConfiguracionInicialController::class, 'guardarDesdeModal']);
 use App\Http\Controllers\PruebaController;
 // Rutas mínimas para pruebas CRUD
 Route::get('/prueba', [PruebaController::class, 'index'])->name('prueba.index');

@@ -19,16 +19,17 @@ class SectionController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $id = \Route::current()->Parameter('id');
-        $this->org = Org::find($id);
+        // El parámetro 'id' debe obtenerse dentro de los métodos, no en el constructor
+        $this->org = null;
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $org = $this->org;
+        $id = $request->route('id');
+        $org = Org::find($id);
         $fixedCostConfig = FixedCostConfig::firstOrCreate(
-            ['org_id' => $org->id],
+            ['org_id' => $org ? $org->id : null],
             [
                 'fixed_charge_penalty' => 0,
                 'replacement_penalty' => 0,

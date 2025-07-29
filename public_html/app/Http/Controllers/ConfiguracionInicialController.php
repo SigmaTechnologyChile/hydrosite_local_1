@@ -10,6 +10,51 @@ use Illuminate\Http\Request;
 class ConfiguracionInicialController extends Controller
 {
     /**
+     * Recibe los datos del modal y registra en configuracion_cuentas_iniciales y actualiza saldos en cuentas
+     */
+    public function guardarDesdeModal(Request $request)
+    {
+        $data = $request->validate([
+            'saldo_caja_general' => 'required|numeric',
+            'saldo_cta_corriente_1' => 'required|numeric',
+            'saldo_cta_corriente_2' => 'required|numeric',
+            'saldo_cuenta_ahorro' => 'required|numeric',
+            'responsable' => 'nullable|string|max:100',
+        ]);
+
+        // IDs de las cuentas (pueden ajustarse según la estructura real)
+        $cuentas = [
+            'caja_general' => ['tipo' => 'caja', 'saldo' => $data['saldo_caja_general']],
+            'cuenta_corriente_1' => ['tipo' => 'corriente', 'saldo' => $data['saldo_cta_corriente_1']],
+            'cuenta_corriente_2' => ['tipo' => 'corriente', 'saldo' => $data['saldo_cta_corriente_2']],
+            'cuenta_ahorro' => ['tipo' => 'ahorro', 'saldo' => $data['saldo_cuenta_ahorro']],
+        ];
+
+        foreach ($cuentas as $nombre => $info) {
+            // Buscar o crear la cuenta
+            $cuenta = \App\Models\Cuenta::firstOrCreate(
+                ['nombre' => $nombre],
+                ['tipo' => $info['tipo'], 'saldo_actual' => $info['saldo']]
+            );
+            // Actualizar saldo_actual si ya existe
+            $cuenta->saldo_actual = $info['saldo'];
+            $cuenta->save();
+
+            // Registrar en configuracion_cuentas_iniciales
+            \App\Models\ConfiguracionInicial::updateOrCreate(
+                ['cuenta_id' => $cuenta->id],
+                [
+                    'org_id' => 1, // Ajustar si hay multi-organización
+                    'saldo_inicial' => $info['saldo'],
+                    'responsable' => $data['responsable'] ?? '',
+                    'tipo_cuenta' => $nombre,
+                ]
+            );
+        }
+
+        return response()->json(['success' => true]);
+    }
+    /**
      * Sincroniza los saldos iniciales de configuracion_cuentas_iniciales con saldo_actual en cuentas
      */
     public function sincronizarSaldosIniciales()

@@ -25,8 +25,8 @@ class OrdersController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $id = \Route::current()->Parameter('id');
-        $this->org = Org::find($id);
+        // El parámetro 'id' debe obtenerse dentro de los métodos, no en el constructor
+        $this->org = null;
     }
 
 
